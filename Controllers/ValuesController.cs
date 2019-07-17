@@ -2,9 +2,7 @@
 using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
-using DataGenerator.Models;
 using Microsoft.AspNetCore.Mvc;
-using DataGenerator.Services;
 
 namespace DataGenerator.Controllers
 {
@@ -28,10 +26,8 @@ namespace DataGenerator.Controllers
 
         // POST api/values
         [HttpPost]
-        public ActionResult<string> Post(PostRequestData post)
+        public void Post([FromBody] string value)
         {
-            TestService ts = new TestService();
-            return ts.PrintValues(post.Tables);
         }
 
         // PUT api/values/5
