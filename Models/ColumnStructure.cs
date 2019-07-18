@@ -1,15 +1,14 @@
-﻿using CsvHelper.Configuration.Attributes;
-using System;
+﻿using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
 
 namespace DataGenerator.Models
 {
-    public class LastName
+    public class ColumnStructure
     {
-        public long Id { get; set; }
         public string Name { get; set; }
-
+        public string Type { get; set; }
+        public Dictionary<string, int> Options { get; set; }
     }
 }

@@ -1,15 +1,13 @@
-﻿using CsvHelper.Configuration.Attributes;
-using System;
+﻿using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
 
 namespace DataGenerator.Models
 {
-    public class LastName
+    public class DesiredTableStructure
     {
-        public long Id { get; set; }
         public string Name { get; set; }
-
+        public ColumnStructure[] ColumnStructures { get; set; }
     }
 }

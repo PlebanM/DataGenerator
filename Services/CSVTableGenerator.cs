@@ -17,33 +17,37 @@ namespace DataGenerator.Services
             this.columnGenerator = columnGenerator;
         }
 
-        public MemoryStream GenerateTable(DesiredTableStructure structure, Settings settings)
+        public byte[] GenerateTable(DesiredTableStructure structure, Settings settings)
         {
             List<List<String>> columns = new List<List<String>>();
-            foreach (Column columnStructure in structure.Columns)
+            foreach (ColumnStructure columnStructure in structure.ColumnStructures)
             {
-                columns.Add(columnGenerator.GenerateColumn(columnStructure, settings));
+                columns.Add(columnGenerator.GenerateColumn(columnStructure, settings.RowNumbers));
             }
 
-            MemoryStream table = new MemoryStream();
+            byte[] csvFile;
+
+            using (MemoryStream table = new MemoryStream())
             using (StreamWriter writer = new StreamWriter(table))
             using (CsvWriter csvWriter = new CsvWriter(writer)) {
-                foreach (var columnName in structure)
+                foreach (var columnStructure in structure.ColumnStructures)
                 {
-                    csvWriter.WriteField(columnName);
+                    csvWriter.WriteField(columnStructure.Name);
                 }
                 csvWriter.NextRecord();
-                for (int i = 0; i < settings.RowNumber; i++)
+                for (int i = 0; i < settings.RowNumbers; i++)
                 {
                     for (int j = 0; j < columns.Count; j++)
                     {
                         csvWriter.WriteField(columns[j][i]);
                     }
+                    csvWriter.NextRecord();
                 }
                 writer.Flush();
                 table.Position = 0;
+                csvFile = table.ToArray();
             }
-            return table;
+            return csvFile;
         }
 
     }
