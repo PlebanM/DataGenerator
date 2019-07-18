@@ -2,6 +2,8 @@
 using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
+using DataGenerator.Models;
+using DataGenerator.Services;
 using Microsoft.AspNetCore.Mvc;
 
 namespace DataGenerator.Controllers
@@ -25,10 +27,11 @@ namespace DataGenerator.Controllers
         }
 
         // POST api/values
-        [HttpPost]
-        public void Post([FromBody] string value)
+         [HttpPost]
+        public ActionResult<string> Post(PostRequestData post)
         {
-
+            TestService ts = new TestService();
+            return ts.PrintValues(post.Tables);
         }
 
         // PUT api/values/5
@@ -42,5 +45,7 @@ namespace DataGenerator.Controllers
         public void Delete(int id)
         {
         }
+
+       
     }
 }
