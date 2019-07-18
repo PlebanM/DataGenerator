@@ -15,5 +15,6 @@ namespace DataGenerator.Models
         }
 
         public DbSet<LastName> LastNames { get; set; }
+        public DbSet<FirstName> FirstNames { get; set; }
     }
 }

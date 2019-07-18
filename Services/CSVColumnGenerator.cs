@@ -33,6 +33,7 @@ namespace DataGenerator.Services
         private void RegisterFunctions()
         {
             generatorFunctions["lastName"] = GenerateLastNames;
+            generatorFunctions["firstName"] = GenerateFirstNames;
             generatorFunctions["integer"] = GenerateIntegers;
         }
 
@@ -43,6 +44,17 @@ namespace DataGenerator.Services
             {
                 result.AddRange(from lastName in dataContext.LastNames
                                 select lastName.Name);
+            }
+            return result;
+        }
+
+        public List<string> GenerateFirstNames(Dictionary<string, int> options, long length)
+        {
+            List<String> result = new List<string>();
+            while (result.Count < length)
+            {
+                result.AddRange(from firstName in dataContext.FirstNames
+                                select firstName.Name);
             }
             return result;
         }
