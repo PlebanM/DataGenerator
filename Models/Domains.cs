@@ -1,11 +1,9 @@
-﻿
-
-namespace DataGenerator.Models
+﻿namespace DataGenerator.Models
 {
-    public class LastName
+    public class Domains
     {
+        
         public long Id { get; set; }
         public string Name { get; set; }
-
     }
 }
