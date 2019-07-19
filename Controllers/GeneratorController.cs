@@ -4,10 +4,13 @@ using System.IO;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
+using DataGenerator.Data;
 using DataGenerator.Models;
+using DataGenerator.Models.Options;
 using DataGenerator.Services;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
+using Microsoft.EntityFrameworkCore;
 
 namespace DataGenerator.Controllers
 {
@@ -17,10 +20,12 @@ namespace DataGenerator.Controllers
     {
 
         private DataContext dataContext;
+        private OptionsContext optionsContext;
 
-        public GeneratorController(DataContext dataContext)
+        public GeneratorController(DataContext dataContext, OptionsContext optionsContext)
         {
             this.dataContext = dataContext;
+            this.optionsContext = optionsContext;
         }
         
         // GET: api/Generator
@@ -31,6 +36,30 @@ namespace DataGenerator.Controllers
             CSVTableGenerator tableGenerator = new CSVTableGenerator(columnGenerator);
             byte[] csvFile = tableGenerator.GenerateTable(generatorSetupData.tables[0], generatorSetupData.settings);
             return File(csvFile, "application/csv", "my_file.csv");
+        }
+
+        [HttpGet]
+        [Route("Options")]
+        public List<OptionsRepresentation> Options()
+        {
+            var types = optionsContext.ColumnTypes
+                .Include(ct => ct.ColumnTypeOptions)
+                .ThenInclude(cto => cto.Option)
+                .ToList();
+
+            List<OptionsRepresentation> representations = new List<OptionsRepresentation>();
+
+            foreach (var columnType in types)
+            {
+                List<string> options = new List<string>();
+                foreach (var option in columnType.ColumnTypeOptions.Select(e => e.Option))
+                {
+                    options.Add(option.Name);
+                }
+                representations.Add(new OptionsRepresentation { Type = columnType.type, Options = options });
+            }
+                                           
+            return representations;
         }
     }
 }
