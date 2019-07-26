@@ -76,7 +76,7 @@ namespace DataGenerator.Services
 
         public List<string> GenerateDomains(Dictionary<string, int> options, long length)
         {
-            List<String> result = new List<string>();
+            var result = new List<string>();
             while (result.Count < length)
             {
                 result.AddRange(from domains in dataContext.Domains
@@ -87,7 +87,7 @@ namespace DataGenerator.Services
 
         public List<string> GenerateLastNames(Dictionary<string, int> options, long length)
         {
-            List<String> result = new List<string>();
+            var result = new List<string>();
             while (result.Count < length)
             {
                 result.AddRange(from lastName in dataContext.LastNames
@@ -98,7 +98,7 @@ namespace DataGenerator.Services
 
         public List<string> GenerateFirstNames(Dictionary<string, int> options, long length)
         {
-            List<String> result = new List<string>();
+            var result = new List<string>();
             while (result.Count < length)
             {
                 result.AddRange(from firstName in dataContext.FirstNames
@@ -109,7 +109,7 @@ namespace DataGenerator.Services
 
         public List<string> GenerateIntegers(Dictionary<string, int> options, long length)
         {
-            List<string> result = new List<string>();
+            var result = new List<string>();
             for (long i = 1; i <= length; i++)
             {
                 result.Add(i.ToString());

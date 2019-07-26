@@ -18,7 +18,7 @@ namespace DataGenerator.Services
 
         public byte[] GenerateTable(DesiredTableStructure structure, Settings settings)
         {
-            List<List<String>> columns = new List<List<String>>();
+            var columns = new List<List<String>>();
             foreach (ColumnStructure columnStructure in structure.ColumnStructures)
             {
                 columns.Add(columnGenerator.GenerateColumn(columnStructure, settings.RowNumbers));

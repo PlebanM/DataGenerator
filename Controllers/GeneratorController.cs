@@ -32,9 +32,9 @@ namespace DataGenerator.Controllers
         [HttpGet]
         public ActionResult Get(GeneratorSetupData generatorSetupData)
         {
-            CSVColumnGenerator columnGenerator = new CSVColumnGenerator(dataContext);
-            CSVTableGenerator tableGenerator = new CSVTableGenerator(columnGenerator);
-            byte[] csvFile = tableGenerator.GenerateTable(generatorSetupData.tables[0], generatorSetupData.settings);
+            var columnGenerator = new CSVColumnGenerator(dataContext);
+            var tableGenerator = new CSVTableGenerator(columnGenerator);
+            var csvFile = tableGenerator.GenerateTable(generatorSetupData.tables[0], generatorSetupData.settings);
             return File(csvFile, "application/csv", "my_file.csv");
         }
 
@@ -47,11 +47,11 @@ namespace DataGenerator.Controllers
                 .ThenInclude(cto => cto.Option)
                 .ToList();
 
-            List<OptionsRepresentation> representations = new List<OptionsRepresentation>();
+            var representations = new List<OptionsRepresentation>();
 
             foreach (var columnType in types)
             {
-                List<string> options = new List<string>();
+                var options = new List<string>();
                 foreach (var option in columnType.ColumnTypeOptions.Select(e => e.Option))
                 {
                     options.Add(option.Name);
