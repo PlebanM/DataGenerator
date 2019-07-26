@@ -8,7 +8,7 @@ using System.Threading.Tasks;
 
 namespace DataGenerator.Services
 {
-    public class CSVTableGenerator
+    public class CSVTableGenerator : ITableGenerator
     {
         private CSVColumnGenerator columnGenerator;
         public CSVTableGenerator(CSVColumnGenerator columnGenerator)

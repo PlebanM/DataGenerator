@@ -18,13 +18,12 @@ namespace DataGenerator.Controllers
     [ApiController]
     public class GeneratorController : ControllerBase
     {
-
-        private DataContext dataContext;
+        private ITableGenerator tableGenerator;
         private OptionsContext optionsContext;
 
-        public GeneratorController(DataContext dataContext, OptionsContext optionsContext)
+        public GeneratorController(OptionsContext optionsContext, ITableGenerator tableGenerator)
         {
-            this.dataContext = dataContext;
+            this.tableGenerator = tableGenerator;
             this.optionsContext = optionsContext;
         }
         
@@ -32,8 +31,6 @@ namespace DataGenerator.Controllers
         [HttpGet]
         public ActionResult Get(GeneratorSetupData generatorSetupData)
         {
-            var columnGenerator = new CSVColumnGenerator(dataContext);
-            var tableGenerator = new CSVTableGenerator(columnGenerator);
             var csvFile = tableGenerator.GenerateTable(generatorSetupData.tables[0], generatorSetupData.settings);
             return File(csvFile, "application/csv", "my_file.csv");
         }
