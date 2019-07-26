@@ -19,12 +19,12 @@ namespace DataGenerator.Controllers
     public class GeneratorController : ControllerBase
     {
         private ITableGenerator tableGenerator;
-        private OptionsContext optionsContext;
+        private IOptionsProvider optionsProvider;
 
-        public GeneratorController(OptionsContext optionsContext, ITableGenerator tableGenerator)
+        public GeneratorController(IOptionsProvider optionsProvider, ITableGenerator tableGenerator)
         {
             this.tableGenerator = tableGenerator;
-            this.optionsContext = optionsContext;
+            this.optionsProvider = optionsProvider;
         }
         
         // GET: api/Generator
@@ -39,24 +39,7 @@ namespace DataGenerator.Controllers
         [Route("Options")]
         public List<OptionsRepresentation> Options()
         {
-            var types = optionsContext.ColumnTypes
-                .Include(ct => ct.ColumnTypeOptions)
-                .ThenInclude(cto => cto.Option)
-                .ToList();
-
-            var representations = new List<OptionsRepresentation>();
-
-            foreach (var columnType in types)
-            {
-                var options = new List<string>();
-                foreach (var option in columnType.ColumnTypeOptions.Select(e => e.Option))
-                {
-                    options.Add(option.Name);
-                }
-                representations.Add(new OptionsRepresentation { Type = columnType.type, Options = options });
-            }
-                                           
-            return representations;
+            return optionsProvider.getOptionsRepresentetion();
         }
     }
 }
