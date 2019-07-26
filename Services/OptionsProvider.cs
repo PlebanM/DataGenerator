@@ -18,14 +18,23 @@ namespace DataGenerator.Services
         }
         public List<OptionsRepresentation> getOptionsRepresentetion()
         {
-            var types = optionsContext.ColumnTypes
+            var columnTypes = GetColumnTypes();
+            return GetOptionsRepresentationsFor(columnTypes);
+        }
+
+        private List<ColumnType> GetColumnTypes()
+        {
+            return optionsContext.ColumnTypes
                 .Include(ct => ct.ColumnTypeOptions)
                 .ThenInclude(cto => cto.Option)
                 .ToList();
+        }
 
+        private List<OptionsRepresentation> GetOptionsRepresentationsFor(List<ColumnType> columnTypes)
+        {
             var representations = new List<OptionsRepresentation>();
 
-            foreach (var columnType in types)
+            foreach (var columnType in columnTypes)
             {
                 var options = new List<string>();
                 foreach (var option in columnType.ColumnTypeOptions.Select(e => e.Option))
