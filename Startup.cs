@@ -4,6 +4,7 @@ using System.Linq;
 using System.Threading.Tasks;
 using DataGenerator.Data;
 using DataGenerator.Models;
+using DataGenerator.Services;
 using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Hosting;
 using Microsoft.AspNetCore.HttpsPolicy;
@@ -32,6 +33,13 @@ namespace DataGenerator
             services.AddDbContext<SQLServerContext>(opt => opt.UseSqlServer(Configuration.GetConnectionString("SQLServerConnection")));
             services.AddDbContext<DataContext>(opt => opt.UseSqlServer(Configuration.GetConnectionString("SQLServerConnection")));
             services.AddDbContext<OptionsContext>(opt => opt.UseSqlServer(Configuration.GetConnectionString("SQLServerConnection")));
+            services.AddScoped<IOptionsProvider, OptionsProvider>();
+            services.AddScoped<CSVColumnGenerator>();
+            services.AddScoped<ITableGenerator, CSVTableGenerator>();
+            services.AddScoped<Func<string, ITableGenerator>>(serviceProvider => key =>
+            {
+                return serviceProvider.GetService<CSVTableGenerator>();
+            });
         }
 
         // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.

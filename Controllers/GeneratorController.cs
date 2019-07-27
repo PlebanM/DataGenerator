@@ -18,22 +18,19 @@ namespace DataGenerator.Controllers
     [ApiController]
     public class GeneratorController : ControllerBase
     {
+        private ITableGenerator tableGenerator;
+        private IOptionsProvider optionsProvider;
 
-        private DataContext dataContext;
-        private OptionsContext optionsContext;
-
-        public GeneratorController(DataContext dataContext, OptionsContext optionsContext)
+        public GeneratorController(IOptionsProvider optionsProvider, ITableGenerator tableGenerator)
         {
-            this.dataContext = dataContext;
-            this.optionsContext = optionsContext;
+            this.tableGenerator = tableGenerator;
+            this.optionsProvider = optionsProvider;
         }
         
         // GET: api/Generator
         [HttpGet]
         public ActionResult Get(GeneratorSetupData generatorSetupData)
         {
-            var columnGenerator = new CSVColumnGenerator(dataContext);
-            var tableGenerator = new CSVTableGenerator(columnGenerator);
             var csvFile = tableGenerator.GenerateTable(generatorSetupData.tables[0], generatorSetupData.settings);
             return File(csvFile, "application/csv", "my_file.csv");
         }
@@ -42,24 +39,7 @@ namespace DataGenerator.Controllers
         [Route("Options")]
         public List<OptionsRepresentation> Options()
         {
-            var types = optionsContext.ColumnTypes
-                .Include(ct => ct.ColumnTypeOptions)
-                .ThenInclude(cto => cto.Option)
-                .ToList();
-
-            var representations = new List<OptionsRepresentation>();
-
-            foreach (var columnType in types)
-            {
-                var options = new List<string>();
-                foreach (var option in columnType.ColumnTypeOptions.Select(e => e.Option))
-                {
-                    options.Add(option.Name);
-                }
-                representations.Add(new OptionsRepresentation { Type = columnType.type, Options = options });
-            }
-                                           
-            return representations;
+            return optionsProvider.getOptionsRepresentetion();
         }
     }
 }

@@ -8,7 +8,7 @@ using System.Threading.Tasks;
 
 namespace DataGenerator.Services
 {
-    public class CSVTableGenerator
+    public class CSVTableGenerator : ITableGenerator
     {
         private CSVColumnGenerator columnGenerator;
         public CSVTableGenerator(CSVColumnGenerator columnGenerator)
@@ -36,7 +36,8 @@ namespace DataGenerator.Services
         {
             using (MemoryStream table = new MemoryStream())
             using (StreamWriter writer = new StreamWriter(table))
-            using (CsvWriter csvWriter = new CsvWriter(writer)) {
+            using (CsvWriter csvWriter = new CsvWriter(writer))
+            {
                 AddColumnNamesToContent(csvWriter, structure);
                 AddDataRowsToContent(csvWriter, dataColumns, rowCount);
                 writer.Flush();
