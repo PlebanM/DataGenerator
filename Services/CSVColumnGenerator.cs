@@ -1,4 +1,6 @@
-﻿using DataGenerator.Models;
+﻿using com.sun.net.httpserver;
+using DataGenerator.Models;
+using DataGenerator.Models.Errors;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -37,12 +39,15 @@ namespace DataGenerator.Services
             generatorFunctions["firstName"] = GenerateFirstNames;
             generatorFunctions["integer"] = GenerateIntegers;
             generatorFunctions["email"] = GenerateEmails;
+            generatorFunctions["randomWord"] = GenerateRandomString;
 
         }
 
         private List<string> GenerateEmails(Dictionary<string, int> options, long length)
         {
+
             HashSet<String> result = new HashSet<string>();
+
             StringBuilder sb = new StringBuilder();
             Random rand = new Random();
 
@@ -109,6 +114,8 @@ namespace DataGenerator.Services
         public List<string> GenerateFirstNames(Dictionary<string, int> options, long length)
         {
             var result = new List<string>();
+
+            
             while (result.Count < length)
             {
                 result.AddRange(from firstName in dataContext.FirstNames
@@ -119,14 +126,30 @@ namespace DataGenerator.Services
 
         public List<string> GenerateIntegers(Dictionary<string, int> options, long length)
         {
+            int optionsFrom = options.GetValueOrDefault("from", 1);      
+            var optionsGap = options.GetValueOrDefault("gap", 1);
+
             var result = new List<string>();
-            for (long i = 1; i <= length; i++)
+
+           
+            //    throw new BaseCustomException("To big gap", "Gap bigger than ", 400);
+            
+
+            while (result.Count() < length)
+
             {
-                result.Add(i.ToString());
+                result.Add(optionsFrom.ToString());
+                optionsFrom += optionsGap;
             }
+            
             return result;
         }
 
+
+        public List<string> GenerateRandomString(Dictionary<string, int> options, long length)
+        {
+            return null;
+        }
 
     }
 }
