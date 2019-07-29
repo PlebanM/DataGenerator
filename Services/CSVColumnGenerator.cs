@@ -1,4 +1,5 @@
 ﻿using DataGenerator.Models;
+using DataGenerator.Models.Options;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -31,6 +32,8 @@ namespace DataGenerator.Services
             
         }
 
+        
+
         private void RegisterFunctions()
         {
             generatorFunctions["lastName"] = GenerateLastNames;
@@ -42,7 +45,7 @@ namespace DataGenerator.Services
 
         private List<string> GenerateEmails(Dictionary<string, int> options, long length)
         {
-            List<String> result = new List<string>();
+            HashSet<String> result = new HashSet<string>();
             StringBuilder sb = new StringBuilder();
             Random rand = new Random();
 
@@ -53,8 +56,10 @@ namespace DataGenerator.Services
             var lastNameDB = GenerateLastNames(options, lastNameDBSize);
             var domainsDB = GenerateDomains(options, domainsDBSize);
 
+            string sbToString;
+
             int toSkipFirstName, toSkipLastName, toSkipDomain = 0;
-           
+            int numberToUniqueChangeEmail = 0;
             while (result.Count < length)
             {
                 toSkipFirstName = rand.Next(0, firstNameDBSize);
@@ -67,11 +72,19 @@ namespace DataGenerator.Services
                 sb.Append("@");
                 sb.Append(domainsDB.ElementAt(toSkipDomain));
 
+                sbToString = sb.ToString();
+
+                if (result.Contains(sbToString))
+                {
+                    int atIndex = sbToString.IndexOf("@");
+                    sb.Insert(atIndex - 1, numberToUniqueChangeEmail++);
+                }
+
                 result.Add(sb.ToString());
                 sb.Clear();
             }
 
-            return result;
+            return result.ToList();
         }
 
         public List<string> GenerateDomains(Dictionary<string, int> options, long length)
@@ -109,11 +122,15 @@ namespace DataGenerator.Services
 
         public List<string> GenerateIntegers(Dictionary<string, int> options, long length)
         {
+            long optionsFrom = options.TryGetValue("from");
+            long optionsTo = options.TryGetValue("to");
+            long optionGap = options.TryGetValue("gap");
             var result = new List<string>();
-            for (long i = 1; i <= length; i++)
+            for (long i = 5; i <= 1000; i++)
             {
                 result.Add(i.ToString());
             }
+            result.Add("DUPA");
             return result;
         }
 
