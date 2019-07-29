@@ -128,6 +128,7 @@ namespace DataGenerator.Services
         {
             int optionsFrom = options.GetValueOrDefault("from", 1);      
             var optionsGap = options.GetValueOrDefault("gap", 1);
+            
 
             var result = new List<string>();
 
@@ -148,8 +149,82 @@ namespace DataGenerator.Services
 
         public List<string> GenerateRandomString(Dictionary<string, int> options, long length)
         {
-            return null;
+
+
+            var answer = new List<string>();
+
+            Random random = new Random();
+            var lettersAndNumbers = "abcdefghijklmnopqrstuvwxyz1234567890".ToArray();
+            StringBuilder sb = new StringBuilder(); 
+            
+            int optionLength = options.GetValueOrDefault("length", 6);
+            if (optionLength==0)
+            {
+                throw new BaseCustomException("To small", "Word must be longer than 0 signs. Check options - length.", 400);
+            }
+            int optionUnique = options.GetValueOrDefault("unique", 0);
+            if (optionUnique==1)
+            {
+                new HashSet<string>(answer);
+            }
+            int optionLetters = options.GetValueOrDefault("letters", 1);
+            int optionNumbers = options.GetValueOrDefault("numbers", 1);
+            if (optionLetters==0 && optionNumbers==0)
+            {
+                throw new BaseCustomException("No letter, no numbers.", "Can't create word without letters and numbers. Check options.", 400);
+            }
+
+            int optionsSpacesCount = options.GetValueOrDefault("whiteSigns", 0);
+            if (optionsSpacesCount > (int)Math.Floor(Math.Sqrt(optionLength)))
+            {
+                throw new BaseCustomException("Too many whitespaces", "Can't create string with so many whitespaces, only round down sqrt(wordLength) whitespaces accepted. " +
+                    "You can extend word or don't creat so many whitespace. Change option - whiteSign.", 400);
+            }
+
+            while (answer.Count()<=length)
+            {
+            for (int i = 0; i < optionLength; i++)
+                {
+                    if (optionLetters == 1 && optionNumbers == 0)
+                    {
+                        sb.Append((char)random.Next(97, 123));
+                    }
+                    else if (optionLetters == 0 && optionNumbers == 1)
+                    {
+                        sb.Append(random.Next(0, 10));
+                    }
+                    else
+                    {
+                        sb.Append(lettersAndNumbers[random.Next(lettersAndNumbers.Length)]);
+                    }
+                }
+
+                if (optionsSpacesCount != 0)
+                {
+                    for (int i = 0; i < optionsSpacesCount; i++)
+                    {
+                        int charIndexToReplace = random.Next(1, optionLength - 1);
+                        if (sb[charIndexToReplace - 1] != ' ' && sb[charIndexToReplace + 1] != ' ' && sb[charIndexToReplace] != ' ')
+                        {
+                            sb.Remove(charIndexToReplace, 1);
+                            sb.Insert(charIndexToReplace, ' ');
+
+                        }
+                        else
+                        {
+                            --i;
+                        }
+                    }
+                }
+             
+                answer.Add(sb.ToString());
+                sb.Clear();
+            }
+
+
+            return answer.ToList();
         }
 
+       
     }
 }
