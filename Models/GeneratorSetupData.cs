@@ -7,7 +7,7 @@ namespace DataGenerator.Models
 {
     public class GeneratorSetupData
     {
-        public Settings settings { get; set; }
-        public DesiredTableStructure[] tables { get; set; }
+        public Settings Settings { get; set; }
+        public DesiredTableStructure[] Tables { get; set; }
     }
 }
