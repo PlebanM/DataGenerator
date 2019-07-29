@@ -31,7 +31,7 @@ namespace DataGenerator.Controllers
         [HttpGet]
         public ActionResult Get(GeneratorSetupData generatorSetupData)
         {
-            var csvFile = tableGenerator.GenerateTable(generatorSetupData.tables[0], generatorSetupData.settings);
+            var csvFile = tableGenerator.GenerateTable(generatorSetupData.tables[0]);
             return File(csvFile, "application/csv", "my_file.csv");
         }
 

@@ -16,30 +16,35 @@ namespace DataGenerator.Services
             this.columnGenerator = columnGenerator;
         }
 
-        public byte[] GenerateTable(DesiredTableStructure structure, Settings settings)
+        public List<byte[]> GenerateTables(List<DesiredTableStructure> structures)
         {
-            var dataColumns = GetAllDataColumns(structure, settings.RowNumbers);
-            return CreateCSVFileContentFrom(dataColumns, structure, settings.RowNumbers);
+            return structures.Select(structure => GenerateTable(structure)).ToList();
         }
 
-        private List<List<String>> GetAllDataColumns(DesiredTableStructure structure, long rowCount)
+        public byte[] GenerateTable(DesiredTableStructure structure)
+        {
+            var dataColumns = GetAllDataColumns(structure);
+            return CreateCSVFileContentFrom(dataColumns, structure);
+        }
+
+        private List<List<String>> GetAllDataColumns(DesiredTableStructure structure)
         {
             var columns = new List<List<String>>();
             foreach (ColumnStructure columnStructure in structure.ColumnStructures)
             {
-                columns.Add(columnGenerator.GenerateColumn(columnStructure, rowCount));
+                columns.Add(columnGenerator.GenerateColumn(columnStructure, structure.RowCount));
             }
             return columns;
         }
 
-        private byte[] CreateCSVFileContentFrom(List<List<String>> dataColumns, DesiredTableStructure structure, long rowCount)
+        private byte[] CreateCSVFileContentFrom(List<List<String>> dataColumns, DesiredTableStructure structure)
         {
             using (MemoryStream table = new MemoryStream())
             using (StreamWriter writer = new StreamWriter(table))
             using (CsvWriter csvWriter = new CsvWriter(writer))
             {
                 AddColumnNamesToContent(csvWriter, structure);
-                AddDataRowsToContent(csvWriter, dataColumns, rowCount);
+                AddDataRowsToContent(csvWriter, dataColumns, structure.RowCount);
                 writer.Flush();
                 table.Position = 0;
                 return table.ToArray();
