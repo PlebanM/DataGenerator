@@ -1,7 +1,6 @@
 ﻿using com.sun.net.httpserver;
 using DataGenerator.Models;
 using DataGenerator.Models.Errors;
-using java.lang;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -46,7 +45,7 @@ namespace DataGenerator.Services
 
         private List<string> GenerateEmails(Dictionary<string, int> options, long length)
         {
-            List<String> result = new List<string>();
+            List<string> result = new List<string>();
             StringBuilder sb = new StringBuilder();
             Random rand = new Random();
 
@@ -103,6 +102,8 @@ namespace DataGenerator.Services
         public List<string> GenerateFirstNames(Dictionary<string, int> options, long length)
         {
             var result = new List<string>();
+
+            
             while (result.Count < length)
             {
                 result.AddRange(from firstName in dataContext.FirstNames
@@ -118,6 +119,8 @@ namespace DataGenerator.Services
 
             var result = new List<string>();
 
+           
+            //    throw new BaseCustomException("To big gap", "Gap bigger than ", 400);
             
 
             while (result.Count() < length)
