@@ -109,11 +109,17 @@ namespace DataGenerator.Services
 
         public List<string> GenerateIntegers(Dictionary<string, int> options, long length)
         {
+            int optionsFrom = options.GetValueOrDefault("from", 1);      
+            var optionsGap = options.GetValueOrDefault("gap", 1);
+
             var result = new List<string>();
-            for (long i = 1; i <= length; i++)
+
+            while (result.Count() < length)
             {
-                result.Add(i.ToString());
+                result.Add(optionsFrom.ToString());
+                optionsFrom += optionsGap;
             }
+            
             return result;
         }
 
