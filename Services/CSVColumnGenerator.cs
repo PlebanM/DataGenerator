@@ -40,6 +40,8 @@ namespace DataGenerator.Services
             generatorFunctions["integer"] = GenerateIntegers;
             generatorFunctions["email"] = GenerateEmails;
             generatorFunctions["randomWord"] = GenerateRandomString;
+            generatorFunctions["date"] = GenerateRandomDate;
+
 
         }
 
@@ -132,10 +134,6 @@ namespace DataGenerator.Services
 
             var result = new List<string>();
 
-           
-            //    throw new BaseCustomException("To big gap", "Gap bigger than ", 400);
-            
-
             while (result.Count() < length)
 
             {
@@ -221,10 +219,58 @@ namespace DataGenerator.Services
                 sb.Clear();
             }
 
-
             return answer.ToList();
         }
 
-       
+        public List<string> GenerateRandomDate(Dictionary<string, int> options, long length)
+        {
+            DateTime fromDate;
+            DateTime toDate;
+            if (options["fromDate"].ToString().Length != 8 && options["toDate"].ToString().Length != 8)
+            {
+                throw new BaseCustomException("To short date.", "Proper date format is RRRRMMDD", 400);
+            }
+
+            var dateFromOptions = options["fromDate"].ToString().Insert(4, "/").Insert(7, "/");
+            var dateToOptions = options["toDate"].ToString().Insert(4, "/").Insert(7, "/");
+
+
+            if (DateTime.TryParse(dateFromOptions, out fromDate) && DateTime.TryParse(dateToOptions, out toDate))
+            {
+                if (toDate < fromDate)
+                {
+                    throw new BaseCustomException("ToDate is earlier than fromDate", "Wrong dates in options", 400);
+                }
+
+            }
+            else
+            {
+                throw new BaseCustomException("Wrong date", "Check dates in OPTION", 400);
+
+            }
+
+            Func<DateTime> RandomDayFunc()
+            {
+                DateTime start = fromDate;
+                Random gen = new Random();
+                int range = ((TimeSpan)(toDate - start)).Days;
+                return () => start.AddDays(gen.Next(range));
+            }
+
+            var getRandomDate = RandomDayFunc();
+
+            var result = new List<string>();
+
+            while (result.Count() < length)
+
+            {
+                result.Add(getRandomDate().ToShortDateString());
+                
+            }
+
+            return result;
+        }
+
+
     }
 }
