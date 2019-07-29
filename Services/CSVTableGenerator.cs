@@ -16,11 +16,6 @@ namespace DataGenerator.Services
             this.columnGenerator = columnGenerator;
         }
 
-        public List<byte[]> GenerateTables(DesiredTableStructure[] structures)
-        {
-            return structures.Select(structure => GenerateTable(structure)).ToList();
-        }
-
         public byte[] GenerateTable(DesiredTableStructure structure)
         {
             var dataColumns = GetAllDataColumns(structure);
