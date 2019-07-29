@@ -226,7 +226,7 @@ namespace DataGenerator.Services
         {
             DateTime fromDate;
             DateTime toDate;
-            if (options["fromDate"].ToString().Length != 8 && options["toDate"].ToString().Length != 8)
+            if (options["fromDate"].ToString().Length != 8 || options["toDate"].ToString().Length != 8)
             {
                 throw new BaseCustomException("To short date.", "Proper date format is RRRRMMDD", 400);
             }
@@ -245,7 +245,7 @@ namespace DataGenerator.Services
             }
             else
             {
-                throw new BaseCustomException("Wrong date", "Check dates in OPTION", 400);
+                throw new BaseCustomException("Wrong date", "Check dates in OPTION. Proper date format is RRRRMMDD", 400);
 
             }
 
