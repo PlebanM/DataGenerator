@@ -1,4 +1,7 @@
-﻿using DataGenerator.Models;
+﻿using com.sun.net.httpserver;
+using DataGenerator.Models;
+using DataGenerator.Models.Errors;
+using java.lang;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -37,6 +40,7 @@ namespace DataGenerator.Services
             generatorFunctions["firstName"] = GenerateFirstNames;
             generatorFunctions["integer"] = GenerateIntegers;
             generatorFunctions["email"] = GenerateEmails;
+            generatorFunctions["randomWord"] = GenerateRandomString;
 
         }
 
@@ -110,6 +114,7 @@ namespace DataGenerator.Services
         public List<string> GenerateIntegers(Dictionary<string, int> options, long length)
         {
             var result = new List<string>();
+            throw new NotFoundCustomException();
             for (long i = 1; i <= length; i++)
             {
                 result.Add(i.ToString());
@@ -117,6 +122,11 @@ namespace DataGenerator.Services
             return result;
         }
 
+
+        public List<string> GenerateRandomString(Dictionary<string, int> options, long length)
+        {
+            return null;
+        }
 
     }
 }
