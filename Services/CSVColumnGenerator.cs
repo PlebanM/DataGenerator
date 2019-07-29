@@ -42,7 +42,7 @@ namespace DataGenerator.Services
 
         private List<string> GenerateEmails(Dictionary<string, int> options, long length)
         {
-            List<String> result = new List<string>();
+            HashSet<String> result = new HashSet<string>();
             StringBuilder sb = new StringBuilder();
             Random rand = new Random();
 
@@ -53,8 +53,10 @@ namespace DataGenerator.Services
             var lastNameDB = GenerateLastNames(options, lastNameDBSize);
             var domainsDB = GenerateDomains(options, domainsDBSize);
 
+            string sbToString;
+
             int toSkipFirstName, toSkipLastName, toSkipDomain = 0;
-           
+            int numberToUniqueChangeEmail = 0;
             while (result.Count < length)
             {
                 toSkipFirstName = rand.Next(0, firstNameDBSize);
@@ -67,11 +69,19 @@ namespace DataGenerator.Services
                 sb.Append("@");
                 sb.Append(domainsDB.ElementAt(toSkipDomain));
 
+                sbToString = sb.ToString();
+
+                if (result.Contains(sbToString))
+                {
+                    int atIndex = sbToString.IndexOf("@");
+                    sb.Insert(atIndex - 1, numberToUniqueChangeEmail++);
+                }
+
                 result.Add(sb.ToString());
                 sb.Clear();
             }
 
-            return result;
+            return result.ToList();
         }
 
         public List<string> GenerateDomains(Dictionary<string, int> options, long length)
