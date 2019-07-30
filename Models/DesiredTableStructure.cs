@@ -8,6 +8,7 @@ namespace DataGenerator.Models
     public class DesiredTableStructure
     {
         public string Name { get; set; }
+        public long RowCount { get; set; }
         public ColumnStructure[] ColumnStructures { get; set; }
     }
 }

@@ -7,7 +7,6 @@ namespace DataGenerator.Models
 {
     public class Settings
     {
-        public long RowNumbers { get; set; }
         public string ExtractFileType { get; set; }
     }
 }

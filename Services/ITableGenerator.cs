@@ -8,6 +8,6 @@ namespace DataGenerator.Services
 {
     public interface ITableGenerator
     {
-        byte[] GenerateTable(DesiredTableStructure structure, Settings settings);
+        byte[] GenerateTable(DesiredTableStructure structure);
     }
 }

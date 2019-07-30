@@ -8,6 +8,7 @@ using DataGenerator.Data;
 using DataGenerator.Models;
 using DataGenerator.Models.Options;
 using DataGenerator.Services;
+using DataGenerator.Services.FileCompression;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
@@ -20,19 +21,29 @@ namespace DataGenerator.Controllers
     {
         private ITableGenerator tableGenerator;
         private IOptionsProvider optionsProvider;
+        private Zipper zipper;
 
-        public GeneratorController(IOptionsProvider optionsProvider, ITableGenerator tableGenerator)
+        public GeneratorController(IOptionsProvider optionsProvider, ITableGenerator tableGenerator, Zipper zipper)
         {
             this.tableGenerator = tableGenerator;
             this.optionsProvider = optionsProvider;
+            this.zipper = zipper;
         }
         
         // GET: api/Generator
         [HttpGet]
         public ActionResult Get(GeneratorSetupData generatorSetupData)
         {
-            var csvFile = tableGenerator.GenerateTable(generatorSetupData.tables[0], generatorSetupData.settings);
-            return File(csvFile, "application/csv", "my_file.csv");
+            List<FileSource> csvFiles = new List<FileSource>();
+            foreach (var table in generatorSetupData.Tables)
+            {
+                csvFiles.Add(new FileSource(
+                    tableGenerator.GenerateTable(table), 
+                    table.Name,
+                    generatorSetupData.Settings.ExtractFileType));
+            }
+            byte[] zipContent = zipper.Pack(csvFiles);
+            return File(zipContent, "application/zip", "data.zip");
         }
 
         [HttpGet]
