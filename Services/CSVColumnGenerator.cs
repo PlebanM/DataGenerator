@@ -83,7 +83,14 @@ namespace DataGenerator.Services
 
                 sb.Append(firstnameDB.ElementAt(toSkipFirstName));
                 sb.Append(".");
-                sb.Append(lastNameDB.ElementAt(toSkipLastName));
+                if (lastNameDB.ElementAt(toSkipLastName).Contains(' '))
+                {
+                    sb.Append(lastNameDB.ElementAt(toSkipLastName).Replace(' ','_').Trim());
+                }
+                else
+                {
+                    sb.Append(lastNameDB.ElementAt(toSkipLastName).Trim());
+                }
                 sb.Append("@");
                 sb.Append(domainsDB.ElementAt(toSkipDomain));
 
@@ -139,10 +146,7 @@ namespace DataGenerator.Services
 
         public List<string> GenerateIntegers(Dictionary<string, string> options, long length)
         {
-            /* int optionsFrom = options.GetValueOrDefault("from", 1);      
-             var optionsGap = options.GetValueOrDefault("gap", 1);
-             */
-
+            
             var optionsForm = int.TryParse(options["from"], out int from);
             var optionsGap = int.TryParse(options["gap"], out int gap);
 
@@ -163,91 +167,92 @@ namespace DataGenerator.Services
         {
 
 
-            /* var answer = new List<string>();
+            var answer = new List<string>();
 
-             Random random = new Random();
-             var lettersAndNumbers = "abcdefghijklmnopqrstuvwxyz1234567890".ToArray();
-             StringBuilder sb = new StringBuilder();
+            Random random = new Random();
+            var lettersAndNumbers = "abcdefghijklmnopqrstuvwxyz1234567890".ToArray();
+            StringBuilder sb = new StringBuilder();
 
-             int optionLength = options.GetValueOrDefault("length", 6);
-             if (optionLength == 0)
-             {
-                 throw new BaseCustomException("To small", "Word must be longer than 0 signs. Check options - length.", 400);
-             }
-             int optionUnique = options.GetValueOrDefault("unique", 0);
-             if (optionUnique == 1)
-             {
-                 new HashSet<string>(answer);
-             }
-             int optionLetters = options.GetValueOrDefault("letters", 1);
-             int optionNumbers = options.GetValueOrDefault("numbers", 1);
-             if (optionLetters == 0 && optionNumbers == 0)
-             {
-                 throw new BaseCustomException("No letter, no numbers.", "Can't create word without letters and numbers. Check options.", 400);
-             }
+            int optionLength = int.Parse(options.GetValueOrDefault("length", "6"));
 
-             int optionsSpacesCount = options.GetValueOrDefault("whiteSigns", 0);
-             if (optionsSpacesCount > (int)Math.Floor(Math.Sqrt(optionLength)))
-             {
-                 throw new BaseCustomException("Too many whitespaces", "Can't create string with so many whitespaces, only round down sqrt(wordLength) whitespaces accepted. " +
-                     "You can extend word or don't creat so many whitespace. Change option - whiteSign.", 400);
-             }
+            if (optionLength == 0)
+            {
+                throw new BaseCustomException("To small", "Word must be longer than 0 signs. Check options - length.", 400);
+            }
+            int optionUnique = int.Parse(options.GetValueOrDefault("unique", "0"));
+            if (optionUnique == 1)
+            {
+                new HashSet<string>(answer);
+            }
+            int optionLetters = int.Parse(options.GetValueOrDefault("letters", "1"));
+            int optionNumbers = int.Parse(options.GetValueOrDefault("numbers", "1"));
+            if (optionLetters == 0 && optionNumbers == 0)
+            {
+                throw new BaseCustomException("No letter, no numbers.", "Can't create word without letters and numbers. Check options.", 400);
+            }
 
-             while (answer.Count() <= length)
-             {
-                 for (int i = 0; i < optionLength; i++)
-                 {
-                     if (optionLetters == 1 && optionNumbers == 0)
-                     {
-                         sb.Append((char)random.Next(97, 123));
-                     }
-                     else if (optionLetters == 0 && optionNumbers == 1)
-                     {
-                         sb.Append(random.Next(0, 10));
-                     }
-                     else
-                     {
-                         sb.Append(lettersAndNumbers[random.Next(lettersAndNumbers.Length)]);
-                     }
-                 }
+            int optionsSpacesCount = int.Parse(options.GetValueOrDefault("whiteSigns", "0"));
+            if (optionsSpacesCount > (int)Math.Floor(Math.Sqrt(optionLength)))
+            {
+                throw new BaseCustomException("Too many whitespaces", "Can't create string with so many whitespaces, only round down sqrt(wordLength) whitespaces accepted. " +
+                    "You can extend word or don't creat so many whitespace. Change option - whiteSign.", 400);
+            }
 
-                 if (optionsSpacesCount != 0)
-                 {
-                     for (int i = 0; i < optionsSpacesCount; i++)
-                     {
-                         int charIndexToReplace = random.Next(1, optionLength - 1);
-                         if (sb[charIndexToReplace - 1] != ' ' && sb[charIndexToReplace + 1] != ' ' && sb[charIndexToReplace] != ' ')
-                         {
-                             sb.Remove(charIndexToReplace, 1);
-                             sb.Insert(charIndexToReplace, ' ');
+            while (answer.Count() <= length)
+            {
+                for (int i = 0; i < optionLength; i++)
+                {
+                    if (optionLetters == 1 && optionNumbers == 0)
+                    {
+                        sb.Append((char)random.Next(97, 123));
+                    }
+                    else if (optionLetters == 0 && optionNumbers == 1)
+                    {
+                        sb.Append(random.Next(0, 10));
+                    }
+                    else
+                    {
+                        sb.Append(lettersAndNumbers[random.Next(lettersAndNumbers.Length)]);
+                    }
+                }
 
-                         }
-                         else
-                         {
-                             --i;
-                         }
-                     }
-                 }
+                if (optionsSpacesCount != 0)
+                {
+                    for (int i = 0; i < optionsSpacesCount; i++)
+                    {
+                        int charIndexToReplace = random.Next(1, optionLength - 1);
+                        if (sb[charIndexToReplace - 1] != ' ' && sb[charIndexToReplace + 1] != ' ' && sb[charIndexToReplace] != ' ')
+                        {
+                            sb.Remove(charIndexToReplace, 1);
+                            sb.Insert(charIndexToReplace, ' ');
 
-                 answer.Add(sb.ToString());
-                 sb.Clear();
-             }*/
+                        }
+                        else
+                        {
+                            --i;
+                        }
+                    }
+                }
 
-            /*return answer.ToList();*/
-            return null;
+                answer.Add(sb.ToString());
+                sb.Clear();
+            }
+
+            return answer.ToList();
+            
         }
 
         public List<string> GenerateRandomDate(Dictionary<string, string> options, long length)
         {
             DateTime fromDate;
             DateTime toDate;
-            if (options["fromDate"].ToString().Length != 8 || options["toDate"].ToString().Length != 8)
+            if (options["fromDate"].Length != 8 || options["toDate"].Length != 8)
             {
                 throw new BaseCustomException("To short date.", "Proper date format is RRRRMMDD", 400);
             }
 
-            var dateFromOptions = options["fromDate"].ToString().Insert(4, "/").Insert(7, "/");
-            var dateToOptions = options["toDate"].ToString().Insert(4, "/").Insert(7, "/");
+            var dateFromOptions = options["fromDate"].Insert(4, "/").Insert(7, "/");
+            var dateToOptions = options["toDate"].Insert(4, "/").Insert(7, "/");
 
 
             if (DateTime.TryParse(dateFromOptions, out fromDate) && DateTime.TryParse(dateToOptions, out toDate))
@@ -256,12 +261,10 @@ namespace DataGenerator.Services
                 {
                     throw new BaseCustomException("ToDate is earlier than fromDate", "Wrong dates in options", 400);
                 }
-
             }
             else
             {
                 throw new BaseCustomException("Wrong date", "Check dates in OPTION. Proper date format is RRRRMMDD", 400);
-
             }
 
             Func<DateTime> RandomDayFunc()
@@ -280,12 +283,8 @@ namespace DataGenerator.Services
 
             {
                 result.Add(getRandomDate().ToShortDateString());
-                
             }
-
             return result;
         }
-
-
     }
 }
