@@ -4,6 +4,7 @@ using System;
 using System.Collections.Generic;
 using System.IO;
 using System.Linq;
+using System.Text;
 using System.Threading.Tasks;
 
 namespace DataGenerator.Services
@@ -34,9 +35,13 @@ namespace DataGenerator.Services
 
         private byte[] CreateCSVFileContentFrom(List<List<String>> dataColumns, DesiredTableStructure structure)
         {
+            var config = new CsvHelper.Configuration.Configuration();
+            config.Delimiter = ",";
+            config.Encoding = Encoding.UTF8;
+            config.InjectionEscapeCharacter = '\n';
             using (MemoryStream table = new MemoryStream())
             using (StreamWriter writer = new StreamWriter(table))
-            using (CsvWriter csvWriter = new CsvWriter(writer))
+            using (CsvWriter csvWriter = new CsvWriter(writer, config))
             {
                 AddColumnNamesToContent(csvWriter, structure);
                 AddDataRowsToContent(csvWriter, dataColumns, structure.RowCount);
