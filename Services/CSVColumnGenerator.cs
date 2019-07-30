@@ -41,8 +41,21 @@ namespace DataGenerator.Services
             generatorFunctions["email"] = GenerateEmails;
             generatorFunctions["randomWord"] = GenerateRandomString;
             generatorFunctions["date"] = GenerateRandomDate;
+            generatorFunctions["ID"] = GenerateID;
 
 
+        }
+
+        private List<string> GenerateID(Dictionary<string, int> options, long length)
+        {
+            List<string> IDsList = new List<string>();
+
+            for (int i = 1; i <= length; i++)
+            {
+                IDsList.Add(i.ToString());
+            }
+
+            return IDsList;
         }
 
         private List<string> GenerateEmails(Dictionary<string, int> options, long length)
