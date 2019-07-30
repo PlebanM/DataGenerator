@@ -9,6 +9,6 @@ namespace DataGenerator.Models
     {
         public string Name { get; set; }
         public string Type { get; set; }
-        public Dictionary<string, int> Options { get; set; }
+        public Dictionary<string, string> Options { get; set; }
     }
 }
