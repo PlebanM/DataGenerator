@@ -1,6 +1,7 @@
 ﻿using com.sun.net.httpserver;
 using DataGenerator.Models;
 using DataGenerator.Models.Errors;
+using MlkPwgen;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -42,8 +43,39 @@ namespace DataGenerator.Services
             generatorFunctions["randomWord"] = GenerateRandomString;
             generatorFunctions["date"] = GenerateRandomDate;
             generatorFunctions["ID"] = GenerateID;
+            generatorFunctions["uniqueString"] = GenerateUniqueString;
 
 
+
+        }
+
+        private List<string> GenerateUniqueString(Dictionary<string, string> options, long length)
+        {
+            
+            var optionsCaseSesitive = bool.TryParse(options["caseSensitive"], out bool sensitive);
+            if ((length>Math.Pow(36,length) && !sensitive) || (length > Math.Pow(52, length) && sensitive))
+            {
+                throw new BaseCustomException("Can't create so many unique strings", "Change word length(longer) or row numbers(less)", 400);
+            }
+            HashSet<string> stringList = new HashSet<string>();
+            var wordLength = int.Parse(options["length"]);
+
+            if (sensitive)
+            {
+                while (stringList.Count() <= length)
+                {
+                    stringList.Add(PasswordGenerator.Generate(length: wordLength, allowed: Sets.Alphanumerics));
+                }
+            }
+            else
+            {
+                while (stringList.Count() <= length)
+                {
+                    stringList.Add(PasswordGenerator.Generate(wordLength, "abcdefghijklmnopqrstuvwxyz0123456789"));
+                }
+            }
+
+            return stringList.ToList();            
         }
 
 
@@ -63,7 +95,7 @@ namespace DataGenerator.Services
             HashSet<String> result = new HashSet<string>();
 
             StringBuilder sb = new StringBuilder();
-            Random rand = new Random();
+            System.Random rand = new System.Random();
 
             int firstNameDBSize = dataContext.FirstNames.Count();
             int lastNameDBSize = dataContext.LastNames.Count();
@@ -170,7 +202,7 @@ namespace DataGenerator.Services
 
             var answer = new List<string>();
 
-            Random random = new Random();
+            System.Random random = new System.Random();
             var lettersAndNumbers = "abcdefghijklmnopqrstuvwxyz1234567890".ToArray();
             StringBuilder sb = new StringBuilder();
 
@@ -271,7 +303,7 @@ namespace DataGenerator.Services
             Func<DateTime> RandomDayFunc()
             {
                 DateTime start = fromDate;
-                Random gen = new Random();
+                System.Random gen = new System.Random();
                 int range = ((TimeSpan)(toDate - start)).Days;
                 return () => start.AddDays(gen.Next(range));
             }
