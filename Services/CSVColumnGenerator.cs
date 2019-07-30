@@ -12,12 +12,12 @@ namespace DataGenerator.Services
     public class CSVColumnGenerator
     {
         private DataContext dataContext;
-        private Dictionary<string, Func<Dictionary<string, int>, long, List<string>>> generatorFunctions;
+        private Dictionary<string, Func<Dictionary<string, string>, long, List<string>>> generatorFunctions;
 
         public CSVColumnGenerator(DataContext dataContext)
         {
             this.dataContext = dataContext;
-            this.generatorFunctions = new Dictionary<string, Func<Dictionary<string, int>, long, List<string>>>();
+            this.generatorFunctions = new Dictionary<string, Func<Dictionary<string, string>, long, List<string>>>();
             RegisterFunctions();
             
         }
@@ -41,11 +41,22 @@ namespace DataGenerator.Services
             generatorFunctions["email"] = GenerateEmails;
             generatorFunctions["randomWord"] = GenerateRandomString;
             generatorFunctions["date"] = GenerateRandomDate;
+            generatorFunctions["ID"] = GenerateID;
 
 
         }
 
-        private List<string> GenerateEmails(Dictionary<string, int> options, long length)
+        private List<string> GenerateID(Dictionary<string, string> options, long length)
+        {
+            List<string> IDList = new List<string>();
+            for (int i = 1; i <= length; i++)
+            {
+                IDList.Add(i.ToString());
+            }
+            return IDList;
+        }
+
+        private List<string> GenerateEmails(Dictionary<string, string> options, long length)
         {
 
             HashSet<String> result = new HashSet<string>();
@@ -91,7 +102,7 @@ namespace DataGenerator.Services
             return result.ToList();
         }
 
-        public List<string> GenerateDomains(Dictionary<string, int> options, long length)
+        public List<string> GenerateDomains(Dictionary<string, string> options, long length)
         {
             var result = new List<string>();
             while (result.Count < length)
@@ -102,7 +113,7 @@ namespace DataGenerator.Services
             return result;
         }
 
-        public List<string> GenerateLastNames(Dictionary<string, int> options, long length)
+        public List<string> GenerateLastNames(Dictionary<string, string> options, long length)
         {
             var result = new List<string>();
             while (result.Count < length)
@@ -113,7 +124,7 @@ namespace DataGenerator.Services
             return result;
         }
 
-        public List<string> GenerateFirstNames(Dictionary<string, int> options, long length)
+        public List<string> GenerateFirstNames(Dictionary<string, string> options, long length)
         {
             var result = new List<string>();
 
@@ -126,103 +137,107 @@ namespace DataGenerator.Services
             return result;
         }
 
-        public List<string> GenerateIntegers(Dictionary<string, int> options, long length)
+        public List<string> GenerateIntegers(Dictionary<string, string> options, long length)
         {
-            int optionsFrom = options.GetValueOrDefault("from", 1);      
-            var optionsGap = options.GetValueOrDefault("gap", 1);
-            
+            /* int optionsFrom = options.GetValueOrDefault("from", 1);      
+             var optionsGap = options.GetValueOrDefault("gap", 1);
+             */
+
+            var optionsForm = int.TryParse(options["from"], out int from);
+            var optionsGap = int.TryParse(options["gap"], out int gap);
 
             var result = new List<string>();
 
             while (result.Count() < length)
 
             {
-                result.Add(optionsFrom.ToString());
-                optionsFrom += optionsGap;
+                result.Add(from.ToString());
+                from += gap;
             }
             
             return result;
         }
 
 
-        public List<string> GenerateRandomString(Dictionary<string, int> options, long length)
+        public List<string> GenerateRandomString(Dictionary<string, string> options, long length)
         {
 
 
-            var answer = new List<string>();
+            /* var answer = new List<string>();
 
-            Random random = new Random();
-            var lettersAndNumbers = "abcdefghijklmnopqrstuvwxyz1234567890".ToArray();
-            StringBuilder sb = new StringBuilder(); 
-            
-            int optionLength = options.GetValueOrDefault("length", 6);
-            if (optionLength==0)
-            {
-                throw new BaseCustomException("To small", "Word must be longer than 0 signs. Check options - length.", 400);
-            }
-            int optionUnique = options.GetValueOrDefault("unique", 0);
-            if (optionUnique==1)
-            {
-                new HashSet<string>(answer);
-            }
-            int optionLetters = options.GetValueOrDefault("letters", 1);
-            int optionNumbers = options.GetValueOrDefault("numbers", 1);
-            if (optionLetters==0 && optionNumbers==0)
-            {
-                throw new BaseCustomException("No letter, no numbers.", "Can't create word without letters and numbers. Check options.", 400);
-            }
+             Random random = new Random();
+             var lettersAndNumbers = "abcdefghijklmnopqrstuvwxyz1234567890".ToArray();
+             StringBuilder sb = new StringBuilder();
 
-            int optionsSpacesCount = options.GetValueOrDefault("whiteSigns", 0);
-            if (optionsSpacesCount > (int)Math.Floor(Math.Sqrt(optionLength)))
-            {
-                throw new BaseCustomException("Too many whitespaces", "Can't create string with so many whitespaces, only round down sqrt(wordLength) whitespaces accepted. " +
-                    "You can extend word or don't creat so many whitespace. Change option - whiteSign.", 400);
-            }
+             int optionLength = options.GetValueOrDefault("length", 6);
+             if (optionLength == 0)
+             {
+                 throw new BaseCustomException("To small", "Word must be longer than 0 signs. Check options - length.", 400);
+             }
+             int optionUnique = options.GetValueOrDefault("unique", 0);
+             if (optionUnique == 1)
+             {
+                 new HashSet<string>(answer);
+             }
+             int optionLetters = options.GetValueOrDefault("letters", 1);
+             int optionNumbers = options.GetValueOrDefault("numbers", 1);
+             if (optionLetters == 0 && optionNumbers == 0)
+             {
+                 throw new BaseCustomException("No letter, no numbers.", "Can't create word without letters and numbers. Check options.", 400);
+             }
 
-            while (answer.Count()<=length)
-            {
-            for (int i = 0; i < optionLength; i++)
-                {
-                    if (optionLetters == 1 && optionNumbers == 0)
-                    {
-                        sb.Append((char)random.Next(97, 123));
-                    }
-                    else if (optionLetters == 0 && optionNumbers == 1)
-                    {
-                        sb.Append(random.Next(0, 10));
-                    }
-                    else
-                    {
-                        sb.Append(lettersAndNumbers[random.Next(lettersAndNumbers.Length)]);
-                    }
-                }
+             int optionsSpacesCount = options.GetValueOrDefault("whiteSigns", 0);
+             if (optionsSpacesCount > (int)Math.Floor(Math.Sqrt(optionLength)))
+             {
+                 throw new BaseCustomException("Too many whitespaces", "Can't create string with so many whitespaces, only round down sqrt(wordLength) whitespaces accepted. " +
+                     "You can extend word or don't creat so many whitespace. Change option - whiteSign.", 400);
+             }
 
-                if (optionsSpacesCount != 0)
-                {
-                    for (int i = 0; i < optionsSpacesCount; i++)
-                    {
-                        int charIndexToReplace = random.Next(1, optionLength - 1);
-                        if (sb[charIndexToReplace - 1] != ' ' && sb[charIndexToReplace + 1] != ' ' && sb[charIndexToReplace] != ' ')
-                        {
-                            sb.Remove(charIndexToReplace, 1);
-                            sb.Insert(charIndexToReplace, ' ');
+             while (answer.Count() <= length)
+             {
+                 for (int i = 0; i < optionLength; i++)
+                 {
+                     if (optionLetters == 1 && optionNumbers == 0)
+                     {
+                         sb.Append((char)random.Next(97, 123));
+                     }
+                     else if (optionLetters == 0 && optionNumbers == 1)
+                     {
+                         sb.Append(random.Next(0, 10));
+                     }
+                     else
+                     {
+                         sb.Append(lettersAndNumbers[random.Next(lettersAndNumbers.Length)]);
+                     }
+                 }
 
-                        }
-                        else
-                        {
-                            --i;
-                        }
-                    }
-                }
-             
-                answer.Add(sb.ToString());
-                sb.Clear();
-            }
+                 if (optionsSpacesCount != 0)
+                 {
+                     for (int i = 0; i < optionsSpacesCount; i++)
+                     {
+                         int charIndexToReplace = random.Next(1, optionLength - 1);
+                         if (sb[charIndexToReplace - 1] != ' ' && sb[charIndexToReplace + 1] != ' ' && sb[charIndexToReplace] != ' ')
+                         {
+                             sb.Remove(charIndexToReplace, 1);
+                             sb.Insert(charIndexToReplace, ' ');
 
-            return answer.ToList();
+                         }
+                         else
+                         {
+                             --i;
+                         }
+                     }
+                 }
+
+                 answer.Add(sb.ToString());
+                 sb.Clear();
+             }*/
+
+            /*return answer.ToList();*/
+            return null;
         }
 
-        public List<string> GenerateRandomDate(Dictionary<string, int> options, long length)
+        public List<string> GenerateRandomDate(Dictionary<string, string> options, long length)
         {
             DateTime fromDate;
             DateTime toDate;
