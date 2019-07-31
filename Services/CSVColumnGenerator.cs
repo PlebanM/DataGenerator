@@ -49,18 +49,21 @@ namespace DataGenerator.Services
 
         }
 
+        //TODO: int.Parse(options.GetValueOrDefault("letters", "1") - musi obsługiwać lub 
+
+
         private List<string> GenerateUniqueString(Dictionary<string, string> options, long length)
         {
+            var optionsCaseSensitive = bool.Parse(options.GetValueOrDefault("caseSensitive", "true"));
             
-            var optionsCaseSesitive = bool.TryParse(options["caseSensitive"], out bool sensitive);
-            if ((length>Math.Pow(36,length) && !sensitive) || (length > Math.Pow(52, length) && sensitive))
+            if ((length>Math.Pow(36,length) && !optionsCaseSensitive) || (length > Math.Pow(52, length) && optionsCaseSensitive))
             {
                 throw new BaseCustomException("Can't create so many unique strings", "Change word length(longer) or row numbers(less)", 400);
             }
             HashSet<string> stringList = new HashSet<string>();
-            var wordLength = int.Parse(options["length"]);
+            var wordLength = int.Parse(options.GetValueOrDefault("length", "7"));
 
-            if (sensitive)
+            if (optionsCaseSensitive)
             {
                 while (stringList.Count() <= length)
                 {
@@ -179,17 +182,17 @@ namespace DataGenerator.Services
 
         public List<string> GenerateIntegers(Dictionary<string, string> options, long length)
         {
-            
-            var optionsForm = int.TryParse(options["from"], out int from);
-            var optionsGap = int.TryParse(options["gap"], out int gap);
+
+            var optionsFrom = int.Parse(options.GetValueOrDefault("from", "1"));
+            var optionsGap = int.Parse(options.GetValueOrDefault("gap", "1"));
 
             var result = new List<string>();
 
             while (result.Count() < length)
 
             {
-                result.Add(from.ToString());
-                from += gap;
+                result.Add(optionsFrom.ToString());
+                optionsFrom += optionsGap;
             }
             
             return result;
