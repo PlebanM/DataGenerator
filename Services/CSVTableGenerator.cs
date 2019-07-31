@@ -14,6 +14,7 @@ namespace DataGenerator.Services
 
         public byte[] CreateCSVFileContentFrom(FakeDataTable fakeDataTable)
         {
+            
             var config = new CsvHelper.Configuration.Configuration();
             config.Delimiter = ",";
             config.Encoding = Encoding.UTF8;

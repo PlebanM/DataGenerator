@@ -37,9 +37,11 @@ namespace DataGenerator
             services.AddDbContext<OptionsContext>(opt => opt.UseSqlServer(Configuration.GetConnectionString("SQLServerConnection")));
             services.AddScoped<IOptionsProvider, OptionsProvider>();
             services.AddScoped<ColumnGenerator>();
-            services.AddScoped<CSVTableGenerator>();
+            //services.AddScoped<CSVTableGenerator>();
             services.AddScoped<ITableGenerator, TableGenerator>();
-            services.AddScoped<CreateRelationColumns>();
+            // services.AddScoped<CreateRelationColumns>();
+            services.AddScoped<RelationshipController>();
+            services.AddScoped<CSVTableGenerator>();
             services.AddScoped<Func<string, ITableGenerator>>(serviceProvider => key =>
             {
                 return serviceProvider.GetService<TableGenerator>();

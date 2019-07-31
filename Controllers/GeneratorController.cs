@@ -9,6 +9,7 @@ using DataGenerator.Models;
 using DataGenerator.Models.Options;
 using DataGenerator.Services;
 using DataGenerator.Services.FileCompression;
+using DataGenerator.Services.Relationships;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
@@ -40,6 +41,7 @@ namespace DataGenerator.Controllers
             foreach (var table in generatorSetupData.Tables)
             {
                 FakeDataTable fakeDataTable = tableGenerator.GenerateTable(table);
+                
                 csvFiles.Add(new FileSource(
                     csvTableGenerator.CreateCSVFileContentFrom(fakeDataTable),
                     table.Name,
