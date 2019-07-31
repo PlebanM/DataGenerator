@@ -7,7 +7,7 @@ namespace DataGenerator.Models.Options
 {
     public class OptionsRepresentation
     {
-        public string Type { get; set; }
-        public List<string> Options { get; set; }
+        public ColumnType Type { get; set; }
+        public List<Option> Options { get; set; }
     }
 }

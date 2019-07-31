@@ -36,12 +36,12 @@ namespace DataGenerator.Services
 
             foreach (var columnType in columnTypes)
             {
-                var options = new List<string>();
+                var options = new List<Option>();
                 foreach (var option in columnType.ColumnTypeOptions.Select(e => e.Option))
                 {
-                    options.Add(option.Name);
+                    options.Add(option);
                 }
-                representations.Add(new OptionsRepresentation { Type = columnType.type, Options = options });
+                representations.Add(new OptionsRepresentation { Type = columnType, Options = options });
             }
 
             return representations;
