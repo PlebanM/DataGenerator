@@ -186,7 +186,7 @@ namespace DataGenerator.Services
             var optionsFrom = int.Parse(options.GetValueOrDefault("from", "1"));
             var optionsGap = int.Parse(options.GetValueOrDefault("gap", "1"));
             var optionTo = int.Parse(options.GetValueOrDefault("to", length.ToString()));
-            var optionsRandom = bool.Parse(options.GetValueOrDefault("randomTo", "true"));
+            var optionsRandom = bool.Parse(options.GetValueOrDefault("random", "true"));
             System.Random random = new System.Random();
 
             var result = new List<string>();
@@ -233,14 +233,14 @@ namespace DataGenerator.Services
             {
                 throw new BaseCustomException("To small", "Word must be longer than 0 signs. Check options - length.", 400);
             }
-            int optionUnique = int.Parse(options.GetValueOrDefault("unique", "0"));
-            if (optionUnique == 1)
+            bool optionUnique = bool.Parse(options.GetValueOrDefault("unique", "true"));
+            if (optionUnique)
             {
                 new HashSet<string>(answer);
             }
-            int optionLetters = int.Parse(options.GetValueOrDefault("letters", "1"));
-            int optionNumbers = int.Parse(options.GetValueOrDefault("numbers", "1"));
-            if (optionLetters == 0 && optionNumbers == 0)
+            var optionLetters = bool.Parse(options.GetValueOrDefault("letters", "true"));
+            var optionNumbers = bool.Parse(options.GetValueOrDefault("numbers", "true"));
+            if (!optionLetters && !optionNumbers)
             {
                 throw new BaseCustomException("No letter, no numbers.", "Can't create word without letters and numbers. Check options.", 400);
             }
@@ -256,11 +256,11 @@ namespace DataGenerator.Services
             {
                 for (int i = 0; i < optionLength; i++)
                 {
-                    if (optionLetters == 1 && optionNumbers == 0)
+                    if (optionLetters && !optionNumbers)
                     {
                         sb.Append((char)random.Next(97, 123));
                     }
-                    else if (optionLetters == 0 && optionNumbers == 1)
+                    else if (!optionLetters && optionNumbers)
                     {
                         sb.Append(random.Next(0, 10));
                     }
