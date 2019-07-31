@@ -185,14 +185,32 @@ namespace DataGenerator.Services
 
             var optionsFrom = int.Parse(options.GetValueOrDefault("from", "1"));
             var optionsGap = int.Parse(options.GetValueOrDefault("gap", "1"));
+            var optionTo = int.Parse(options.GetValueOrDefault("to", length.ToString()));
+            var optionsRandom = bool.Parse(options.GetValueOrDefault("randomTo", "true"));
+            System.Random random = new System.Random();
 
             var result = new List<string>();
+            var startCount = optionsFrom;
 
-            while (result.Count() < length)
-
+            if (optionsRandom)
             {
-                result.Add(optionsFrom.ToString());
-                optionsFrom += optionsGap;
+                while (result.Count() < length)
+                {
+                    result.Add(random.Next(startCount,optionTo).ToString());
+                }
+            }
+            else
+            {
+                while (result.Count() < length)
+                {
+                    result.Add(startCount.ToString());
+                    startCount += optionsGap;
+                    if (startCount == optionTo)
+                    {
+                        startCount = optionsFrom;
+                    }
+                }
+
             }
             
             return result;
