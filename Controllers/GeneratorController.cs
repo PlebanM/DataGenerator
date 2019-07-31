@@ -49,8 +49,7 @@ namespace DataGenerator.Controllers
             {
                 csvFiles.Add(new FileSource(
                     csvTableGenerator.CreateCSVFileContentFrom(fakeDataTable),
-                    //table.Name,
-                    //"dupa",
+
                     fakeDataTable.Name,
                     generatorSetupData.Settings.ExtractFileType));
             }

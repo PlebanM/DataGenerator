@@ -30,6 +30,7 @@ namespace DataGenerator.Services.Relationships
                 else
                 {
                     OneToManyRelations ManyToOneRelation = new OneToManyRelations(relation, fakeDataTables);
+                    ManyToOneRelation.AddColumnToFakeTable();
                 }
             }
         }
