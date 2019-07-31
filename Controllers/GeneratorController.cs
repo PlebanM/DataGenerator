@@ -21,12 +21,14 @@ namespace DataGenerator.Controllers
     {
         private ITableGenerator tableGenerator;
         private IOptionsProvider optionsProvider;
+        private CSVTableGenerator csvTableGenerator;
         private Zipper zipper;
 
-        public GeneratorController(IOptionsProvider optionsProvider, ITableGenerator tableGenerator, Zipper zipper)
+        public GeneratorController(IOptionsProvider optionsProvider, ITableGenerator tableGenerator, Zipper zipper, CSVTableGenerator csvTableGenerator)
         {
             this.tableGenerator = tableGenerator;
             this.optionsProvider = optionsProvider;
+            this.csvTableGenerator = csvTableGenerator;
             this.zipper = zipper;
         }
         
@@ -37,8 +39,9 @@ namespace DataGenerator.Controllers
             List<FileSource> csvFiles = new List<FileSource>();
             foreach (var table in generatorSetupData.Tables)
             {
+                FakeDataTable fakeDataTable = tableGenerator.GenerateTable(table);
                 csvFiles.Add(new FileSource(
-                    tableGenerator.GenerateTable(table), 
+                    csvTableGenerator.CreateCSVFileContentFrom(fakeDataTable),
                     table.Name,
                     generatorSetupData.Settings.ExtractFileType));
             }

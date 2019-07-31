@@ -10,12 +10,12 @@ using System.Threading.Tasks;
 
 namespace DataGenerator.Services
 {
-    public class CSVColumnGenerator
+    public class ColumnGenerator
     {
         private DataContext dataContext;
         private Dictionary<string, Func<Dictionary<string, string>, long, List<string>>> generatorFunctions;
 
-        public CSVColumnGenerator(DataContext dataContext)
+        public ColumnGenerator(DataContext dataContext)
         {
             this.dataContext = dataContext;
             this.generatorFunctions = new Dictionary<string, Func<Dictionary<string, string>, long, List<string>>>();
@@ -23,11 +23,13 @@ namespace DataGenerator.Services
             
         }
 
-        internal List<string> GenerateColumn(ColumnStructure columnStructure, long length)
+        internal FakeDataColumn GenerateColumn(ColumnStructure columnStructure, long length)
         {
             if (generatorFunctions.ContainsKey(columnStructure.Type))
             {
-                return generatorFunctions[columnStructure.Type](columnStructure.Options, length);
+                return new FakeDataColumn(
+                    columnStructure.Name, 
+                    generatorFunctions[columnStructure.Type](columnStructure.Options, length));
             }
 
             throw new ArgumentException();

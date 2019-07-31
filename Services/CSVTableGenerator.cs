@@ -9,31 +9,10 @@ using System.Threading.Tasks;
 
 namespace DataGenerator.Services
 {
-    public class CSVTableGenerator : ITableGenerator
+    public class CSVTableGenerator
     {
-        private CSVColumnGenerator columnGenerator;
-        public CSVTableGenerator(CSVColumnGenerator columnGenerator)
-        {
-            this.columnGenerator = columnGenerator;
-        }
 
-        public byte[] GenerateTable(DesiredTableStructure structure)
-        {
-            var dataColumns = GetAllDataColumns(structure);
-            return CreateCSVFileContentFrom(dataColumns, structure);
-        }
-
-        private List<List<String>> GetAllDataColumns(DesiredTableStructure structure)
-        {
-            var columns = new List<List<String>>();
-            foreach (ColumnStructure columnStructure in structure.ColumnStructures)
-            {
-                columns.Add(columnGenerator.GenerateColumn(columnStructure, structure.RowCount));
-            }
-            return columns;
-        }
-
-        private byte[] CreateCSVFileContentFrom(List<List<String>> dataColumns, DesiredTableStructure structure)
+        public byte[] CreateCSVFileContentFrom(FakeDataTable fakeDataTable)
         {
             var config = new CsvHelper.Configuration.Configuration();
             config.Delimiter = ",";
@@ -43,30 +22,30 @@ namespace DataGenerator.Services
             using (StreamWriter writer = new StreamWriter(table))
             using (CsvWriter csvWriter = new CsvWriter(writer, config))
             {
-                AddColumnNamesToContent(csvWriter, structure);
-                AddDataRowsToContent(csvWriter, dataColumns, structure.RowCount);
+                AddColumnNamesToContent(csvWriter, fakeDataTable.FakeDataColumns);
+                AddDataRowsToContent(csvWriter, fakeDataTable.FakeDataColumns, fakeDataTable.RowCount);
                 writer.Flush();
                 table.Position = 0;
                 return table.ToArray();
             }
         }
 
-        private void AddColumnNamesToContent(CsvWriter csvWriter, DesiredTableStructure structure)
+        private void AddColumnNamesToContent(CsvWriter csvWriter, List<FakeDataColumn> fakeDataColumns)
         {
-            foreach (var columnStructure in structure.ColumnStructures)
+            foreach (var column in fakeDataColumns)
             {
-                csvWriter.WriteField(columnStructure.Name);
+                csvWriter.WriteField(column.Name);
             }
             csvWriter.NextRecord();
         }
 
-        private void AddDataRowsToContent(CsvWriter csvWriter, List<List<String>> dataColumns, long rowCount)
+        private void AddDataRowsToContent(CsvWriter csvWriter, List<FakeDataColumn> dataColumns, long rowCount)
         {
             for (int i = 0; i < rowCount; i++)
             {
                 for (int j = 0; j < dataColumns.Count; j++)
                 {
-                    csvWriter.WriteField(dataColumns[j][i]);
+                    csvWriter.WriteField(dataColumns[j].Data[i]);
                 }
                 csvWriter.NextRecord();
             }
