@@ -30,10 +30,10 @@ namespace DataGenerator.Services.Relationships
             }
         }
 
-        private List<string> CreateListWithNulls(int rowCount, int nullPercent = 5)
+        private List<string> CreateListWithNulls(int rowCount, double nullPercent = 5.0)
         {
-            var convertFromPercent = 5 / 100;
-            List<string> answer = CreateListWithNulls(rowCount);
+            var convertFromPercent = nullPercent / 100;
+            List<string> answer = CreateListWithoutNull(rowCount);
             for (int i = 0; i < answer.Count*convertFromPercent; i++)
             {
                 var positionToChange = random.Next(rowCount);
