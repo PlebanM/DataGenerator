@@ -35,11 +35,12 @@ namespace DataGenerator
             services.AddDbContext<DataContext>(opt => opt.UseSqlServer(Configuration.GetConnectionString("SQLServerConnection")));
             services.AddDbContext<OptionsContext>(opt => opt.UseSqlServer(Configuration.GetConnectionString("SQLServerConnection")));
             services.AddScoped<IOptionsProvider, OptionsProvider>();
-            services.AddScoped<CSVColumnGenerator>();
-            services.AddScoped<ITableGenerator, CSVTableGenerator>();
+            services.AddScoped<ColumnGenerator>();
+            services.AddScoped<CSVTableGenerator>();
+            services.AddScoped<ITableGenerator, TableGenerator>();
             services.AddScoped<Func<string, ITableGenerator>>(serviceProvider => key =>
             {
-                return serviceProvider.GetService<CSVTableGenerator>();
+                return serviceProvider.GetService<TableGenerator>();
             });
             services.AddScoped<Zipper>();
         }
