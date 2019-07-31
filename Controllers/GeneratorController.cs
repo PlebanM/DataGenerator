@@ -38,13 +38,20 @@ namespace DataGenerator.Controllers
         public ActionResult Get(GeneratorSetupData generatorSetupData)
         {
             List<FileSource> csvFiles = new List<FileSource>();
+            List<FakeDataTable> fakeDataTables = new List<FakeDataTable>();
             foreach (var table in generatorSetupData.Tables)
             {
                 FakeDataTable fakeDataTable = tableGenerator.GenerateTable(table);
-                
+                fakeDataTables.Add(fakeDataTable);
+            }
+            RelationshipController relationshipController = new RelationshipController(generatorSetupData.Relationships, fakeDataTables);
+            foreach (var fakeDataTable in fakeDataTables)
+            {
                 csvFiles.Add(new FileSource(
                     csvTableGenerator.CreateCSVFileContentFrom(fakeDataTable),
-                    table.Name,
+                    //table.Name,
+                    //"dupa",
+                    fakeDataTable.Name,
                     generatorSetupData.Settings.ExtractFileType));
             }
             byte[] zipContent = zipper.Pack(csvFiles);

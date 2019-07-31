@@ -10,7 +10,7 @@ namespace DataGenerator.Services.Relationships
     {
         private RelationshipEntity entityCardinalityMany;
         private List<string> dataToPopulateFK;
-        private Random random;
+        private Random random = new Random();
 
         public DataShuffle(RelationshipEntity entityCardinalityMany, List<string> dataToPopulateFK)
         {

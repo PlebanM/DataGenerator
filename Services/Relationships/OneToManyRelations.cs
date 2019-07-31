@@ -14,6 +14,7 @@ namespace DataGenerator.Services.Relationships
         {
             this.relation = relation;
             this.fakeDataTables = fakeDataTables;
+            AddColumnToFakeTable();
         }
         public void AddColumnToFakeTable()
         {
