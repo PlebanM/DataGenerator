@@ -90,7 +90,6 @@ namespace DataGenerator.Services
                 result.IsValid = false;
                 result.Subject = $"Wrong cardinality: {entity.Cardinality}";
                 result.Description = "Cardinality can be set only to one or many";
-                return result;
             }
             return result;
         }
@@ -117,7 +116,6 @@ namespace DataGenerator.Services
                 result.IsValid = false;
                 result.Subject = $"Wrong modality: {entity.Modality}";
                 result.Description = "Modality can be set only to one or zero";
-                return result;
             }
             return result;
         }
