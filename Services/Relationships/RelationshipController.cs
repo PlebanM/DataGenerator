@@ -19,7 +19,7 @@ namespace DataGenerator.Services.Relationships
         {
             foreach (var relation in relationships)
             {
-                if (relation.EntityOne.Cardinality=="many" && relation.EntityTwo.Cardinality=="many")
+                if (relation.EntityOne.Cardinality == "many" && relation.EntityTwo.Cardinality == "many")
                 {
                     ManyToManyRelations ManyToManyRelation = new ManyToManyRelations(relation, fakeDataTables);
                 }
