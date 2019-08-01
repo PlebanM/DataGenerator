@@ -15,7 +15,7 @@ namespace DataGenerator.Services.Validators
         }
         public RelationshipsValidator RelationshipsValidator { get; private set; }
 
-        public WrongInputData Validate(GeneratorSetupData generatorSetupData)
+        public ValidationResult Validate(GeneratorSetupData generatorSetupData)
         {
             return RelationshipsValidator.ValidateRelationships(generatorSetupData.Tables, generatorSetupData.Relationships);
         }

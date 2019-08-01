@@ -44,11 +44,12 @@ namespace DataGenerator.Controllers
         [HttpGet]
         public ActionResult Get(GeneratorSetupData generatorSetupData)
         {
-            WrongInputData wrongInput = validator.Validate(generatorSetupData);
-            if (wrongInput != null)
+            ValidationResult validationResult = validator.Validate(generatorSetupData);
+            if (!validationResult.IsValid)
             {
-                return new JsonResult(wrongInput);
+                return new JsonResult(validationResult);
             }
+
             List<FileSource> csvFiles = new List<FileSource>();
             List<FakeDataTable> fakeDataTables = new List<FakeDataTable>();
             foreach (var table in generatorSetupData.Tables)
