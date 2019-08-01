@@ -26,8 +26,41 @@ namespace DataGenerator.Services
                 {
                     return validationResult;
                 }
+                validationResult = CheckIfModalityIsCorrect(relationship);
+                if (!validationResult.IsValid)
+                {
+                    return validationResult;
+                }
             }
             return validationResult;
+        }
+
+        private ValidationResult CheckIfModalityIsCorrect(Relationship relationship)
+        {
+            var result = new ValidationResult();
+            var cardinalities = new string[] { "one", "many" };
+            if (!(result = CheckIfModalityIsCorrect(relationship.EntityOne)).IsValid)
+            {
+                return result;
+            } else if (!(result = CheckIfModalityIsCorrect(relationship.EntityTwo)).IsValid)
+            {
+                return result;
+            }
+            return result;
+        }
+
+        private ValidationResult CheckIfModalityIsCorrect(RelationshipEntity entity)
+        {
+            var result = new ValidationResult();
+            var modalities = new string[] { "one", "zero" };
+            if (!modalities.Contains(entity.Modality))
+            {
+                result.IsValid = false;
+                result.Subject = $"Wrong modality: {entity.Modality}";
+                result.Description = "Modality can be set only to one or zero";
+                return result;
+            }
+            return result;
         }
 
         private ValidationResult TablesHaveCorrectLengthForManyToOneRelation(DesiredTableStructure[] structures, Relationship relationship)
