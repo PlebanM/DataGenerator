@@ -22,6 +22,7 @@ namespace DataGenerator.Services.Relationships
                 if (relation.EntityOne.Cardinality == "many" && relation.EntityTwo.Cardinality == "many")
                 {
                     ManyToManyRelations ManyToManyRelation = new ManyToManyRelations(relation, fakeDataTables);
+                    ManyToManyRelation.CreateJunctionTable();
                 }
                 else if (relation.EntityOne.Cardinality == "one" && relation.EntityTwo.Cardinality == "one")
                 {
