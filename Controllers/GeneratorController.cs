@@ -10,6 +10,7 @@ using DataGenerator.Models.Options;
 using DataGenerator.Services;
 using DataGenerator.Services.FileCompression;
 using DataGenerator.Services.Relationships;
+using DataGenerator.Services.Validators;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
@@ -24,19 +25,30 @@ namespace DataGenerator.Controllers
         private IOptionsProvider optionsProvider;
         private CSVTableGenerator csvTableGenerator;
         private Zipper zipper;
+        private InputDataValidator validator;
 
-        public GeneratorController(IOptionsProvider optionsProvider, ITableGenerator tableGenerator, Zipper zipper, CSVTableGenerator csvTableGenerator)
+        public GeneratorController(IOptionsProvider optionsProvider,
+            ITableGenerator tableGenerator,
+            Zipper zipper,
+            CSVTableGenerator csvTableGenerator,
+            InputDataValidator validator)
         {
             this.tableGenerator = tableGenerator;
             this.optionsProvider = optionsProvider;
             this.csvTableGenerator = csvTableGenerator;
             this.zipper = zipper;
+            this.validator = validator;
         }
         
         // GET: api/Generator
         [HttpGet]
         public ActionResult Get(GeneratorSetupData generatorSetupData)
         {
+            WrongInputData wrongInput = validator.Validate(generatorSetupData);
+            if (wrongInput != null)
+            {
+                return new JsonResult(wrongInput);
+            }
             List<FileSource> csvFiles = new List<FileSource>();
             List<FakeDataTable> fakeDataTables = new List<FakeDataTable>();
             foreach (var table in generatorSetupData.Tables)
