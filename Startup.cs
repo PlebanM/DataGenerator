@@ -6,6 +6,7 @@ using DataGenerator.Data;
 using DataGenerator.Models;
 using DataGenerator.Models.Errors;
 using DataGenerator.Services;
+using DataGenerator.Services.Relationships;
 using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Hosting;
 using Microsoft.AspNetCore.HttpsPolicy;
@@ -36,8 +37,11 @@ namespace DataGenerator
             services.AddDbContext<OptionsContext>(opt => opt.UseSqlServer(Configuration.GetConnectionString("SQLServerConnection")));
             services.AddScoped<IOptionsProvider, OptionsProvider>();
             services.AddScoped<ColumnGenerator>();
-            services.AddScoped<CSVTableGenerator>();
+            //services.AddScoped<CSVTableGenerator>();
             services.AddScoped<ITableGenerator, TableGenerator>();
+            // services.AddScoped<CreateRelationColumns>();
+            services.AddScoped<RelationshipController>();
+            services.AddScoped<CSVTableGenerator>();
             services.AddScoped<Func<string, ITableGenerator>>(serviceProvider => key =>
             {
                 return serviceProvider.GetService<TableGenerator>();

@@ -9,6 +9,7 @@ using DataGenerator.Models;
 using DataGenerator.Models.Options;
 using DataGenerator.Services;
 using DataGenerator.Services.FileCompression;
+using DataGenerator.Services.Relationships;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
@@ -37,12 +38,19 @@ namespace DataGenerator.Controllers
         public ActionResult Get(GeneratorSetupData generatorSetupData)
         {
             List<FileSource> csvFiles = new List<FileSource>();
+            List<FakeDataTable> fakeDataTables = new List<FakeDataTable>();
             foreach (var table in generatorSetupData.Tables)
             {
                 FakeDataTable fakeDataTable = tableGenerator.GenerateTable(table);
+                fakeDataTables.Add(fakeDataTable);
+            }
+            RelationshipController relationshipController = new RelationshipController(generatorSetupData.Relationships, fakeDataTables);
+            foreach (var fakeDataTable in fakeDataTables)
+            {
                 csvFiles.Add(new FileSource(
                     csvTableGenerator.CreateCSVFileContentFrom(fakeDataTable),
-                    table.Name,
+
+                    fakeDataTable.Name,
                     generatorSetupData.Settings.ExtractFileType));
             }
             byte[] zipContent = zipper.Pack(csvFiles);
