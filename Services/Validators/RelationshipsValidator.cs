@@ -36,8 +36,35 @@ namespace DataGenerator.Services
                 {
                     return validationResult;
                 }
+                validationResult = CheckIfReferencedColumnIsCorrectForManyToOneRelation(structures, relationship);
+                if (!validationResult.IsValid)
+                {
+                    return validationResult;
+                }
             }
             return validationResult;
+        }
+
+        private ValidationResult CheckIfReferencedColumnIsCorrectForManyToOneRelation(DesiredTableStructure[] structures, Relationship relationship)
+        {
+            var result = new ValidationResult();
+            RelationshipEntity many = GetEntityWithCardinality("many", relationship);
+            RelationshipEntity one = GetEntityWithCardinality("one", relationship);
+            if (many == null || one == null)
+            {
+                return result;
+            }
+            DesiredTableStructure oneTable = GetTableStructureByName(structures, one.TableName);
+            if (oneTable.ColumnStructures.Select(c => c.Name).Contains(one.ColumnName))
+            {
+                return result;
+            }
+
+            result.IsValid = false;
+            result.Subject = "Wrong reference";
+            result.Description = $"Column of name {one.ColumnName} does not exist in table {one.TableName}";
+            return result;
+
         }
 
         private ValidationResult CheckIfCardinalityIsCorrect(Relationship relationship)
