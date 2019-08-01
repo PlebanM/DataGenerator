@@ -11,8 +11,8 @@ namespace DataGenerator.Services.Relationships
         private Relationship relation;
         private List<FakeDataTable> fakeDataTables;
         Random random = new Random();
-        string tuplaItemFirstColumnName;
-        string tuplaItemSecondColumnName;
+        RelationshipEntity tuplaItemFirstColumn;
+        RelationshipEntity tuplaItemSecondColumn;
 
 
 
@@ -31,14 +31,13 @@ namespace DataGenerator.Services.Relationships
             var firstColumn = tupleWithDataToCreateJunctionTable.Select(x => x.Item1).ToList();
             var secondColumn = tupleWithDataToCreateJunctionTable.Select(x => x.Item2).ToList();
 
-            var junctionTableName = relation.EntityOne.TableName+relation.EntityTwo.TableName;
+            var junctionTableName = string.Format($"Junction-{relation.EntityOne.TableName}_{relation.EntityTwo.TableName}");
             var rowCount = tupleWithDataToCreateJunctionTable.Count();
             var fakeDataColumns = new List<FakeDataColumn>();
-            fakeDataColumns.Add(new FakeDataColumn(tuplaItemFirstColumnName, firstColumn));
-            fakeDataColumns.Add(new FakeDataColumn(tuplaItemSecondColumnName, secondColumn));
+            fakeDataColumns.Add(new FakeDataColumn(string.Format($"{tuplaItemFirstColumn.TableName}.{tuplaItemFirstColumn.ColumnName}"), firstColumn));
+            fakeDataColumns.Add(new FakeDataColumn(string.Format($"{tuplaItemSecondColumn.TableName}.{tuplaItemSecondColumn.ColumnName}"), secondColumn));
 
             fakeDataTables.Add(new FakeDataTable(junctionTableName, rowCount, fakeDataColumns));
-                   
         }
 
         private List<string> TakeColumnToCreateJunctionTable(RelationshipEntity entityCardinalityOne)
@@ -62,15 +61,15 @@ namespace DataGenerator.Services.Relationships
             }
             else if(modalityFirst == "one")
             {
-                tuplaItemFirstColumnName = relation.EntityOne.ColumnName;
-                tuplaItemSecondColumnName = relation.EntityTwo.ColumnName;
+                tuplaItemFirstColumn = relation.EntityOne;
+                tuplaItemSecondColumn = relation.EntityTwo;
                 return createTupleOneZeroModality(dataFromFirstTable, dataFromSecondTable);
 
             }
             else
             {
-                tuplaItemFirstColumnName = relation.EntityTwo.ColumnName;
-                tuplaItemSecondColumnName = relation.EntityOne.ColumnName;
+                tuplaItemFirstColumn = relation.EntityTwo;
+                tuplaItemSecondColumn = relation.EntityOne;
                 return createTupleOneZeroModality( dataFromSecondTable, dataFromSecondTable);
 
             }
@@ -118,16 +117,16 @@ namespace DataGenerator.Services.Relationships
             {
                 biggerList.AddRange(dataFromFirstTable);
                 smallerList.AddRange(dataFromSecondTable);
-                tuplaItemFirstColumnName = relation.EntityTwo.ColumnName;
-                tuplaItemSecondColumnName = relation.EntityOne.ColumnName;
+                tuplaItemFirstColumn = relation.EntityTwo;
+                tuplaItemSecondColumn = relation.EntityOne;
 
             }
             else
             {
                 biggerList.AddRange(dataFromSecondTable);
                 smallerList.AddRange(dataFromFirstTable);
-                tuplaItemFirstColumnName = relation.EntityOne.ColumnName;
-                tuplaItemSecondColumnName = relation.EntityTwo.ColumnName;
+                tuplaItemFirstColumn = relation.EntityOne;
+                tuplaItemSecondColumn = relation.EntityTwo;
 
             }
 
@@ -157,8 +156,8 @@ namespace DataGenerator.Services.Relationships
             var answer = new HashSet<(string, string)>();
 
             
-            tuplaItemFirstColumnName = relation.EntityOne.ColumnName;
-            tuplaItemSecondColumnName = relation.EntityTwo.ColumnName;
+            tuplaItemFirstColumn = relation.EntityOne;
+            tuplaItemSecondColumn = relation.EntityTwo;
 
             while (answer.Count() < howLongTable)
             {
