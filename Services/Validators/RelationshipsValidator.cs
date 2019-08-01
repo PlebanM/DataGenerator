@@ -31,14 +31,46 @@ namespace DataGenerator.Services
                 {
                     return validationResult;
                 }
+                validationResult = CheckIfCardinalityIsCorrect(relationship);
+                if (!validationResult.IsValid)
+                {
+                    return validationResult;
+                }
             }
             return validationResult;
+        }
+
+        private ValidationResult CheckIfCardinalityIsCorrect(Relationship relationship)
+        {
+            var result = new ValidationResult();
+            if (!(result = CheckIfCardinalityIsCorrect(relationship.EntityOne)).IsValid)
+            {
+                return result;
+            }
+            else if (!(result = CheckIfCardinalityIsCorrect(relationship.EntityTwo)).IsValid)
+            {
+                return result;
+            }
+            return result;
+        }
+
+        private ValidationResult CheckIfCardinalityIsCorrect(RelationshipEntity entity)
+        {
+            var result = new ValidationResult();
+            var cardinalities = new string[] { "one", "many" };
+            if (!cardinalities.Contains(entity.Cardinality))
+            {
+                result.IsValid = false;
+                result.Subject = $"Wrong cardinality: {entity.Cardinality}";
+                result.Description = "Cardinality can be set only to one or many";
+                return result;
+            }
+            return result;
         }
 
         private ValidationResult CheckIfModalityIsCorrect(Relationship relationship)
         {
             var result = new ValidationResult();
-            var cardinalities = new string[] { "one", "many" };
             if (!(result = CheckIfModalityIsCorrect(relationship.EntityOne)).IsValid)
             {
                 return result;
