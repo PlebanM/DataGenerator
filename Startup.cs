@@ -7,6 +7,7 @@ using DataGenerator.Models;
 using DataGenerator.Models.Errors;
 using DataGenerator.Services;
 using DataGenerator.Services.Relationships;
+using DataGenerator.Services.Validators;
 using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Hosting;
 using Microsoft.AspNetCore.HttpsPolicy;
@@ -47,6 +48,8 @@ namespace DataGenerator
                 return serviceProvider.GetService<TableGenerator>();
             });
             services.AddScoped<Zipper>();
+            services.AddScoped<RelationshipsValidator>();
+            services.AddScoped<InputDataValidator>();
         }
 
         // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.
