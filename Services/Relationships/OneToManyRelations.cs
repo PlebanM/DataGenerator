@@ -10,7 +10,7 @@ namespace DataGenerator.Services.Relationships
         private Relationship relation;
         private List<FakeDataTable> fakeDataTables;
 
-        public OneToManyRelations(Relationship relation, List<FakeDataTable> fakeDataTables) 
+        public OneToManyRelations(Relationship relation, List<FakeDataTable> fakeDataTables)
         {
             this.relation = relation;
             this.fakeDataTables = fakeDataTables;
@@ -21,21 +21,31 @@ namespace DataGenerator.Services.Relationships
             var entityCardinalityMany = FindEntityWithMany();
             var entityCardinalityOne = FindEntityWithOne();
 
+            var modalityInCardinalityMany = entityCardinalityMany.Modality;
+            var modalityInCardinalityOne = entityCardinalityOne.Modality;
+
             List<string> dataToPopulateFK = TakeColumnWithPK(entityCardinalityOne);
             int rowCount = unchecked((int)fakeDataTables.Find(x => x.Name == entityCardinalityMany.TableName).RowCount);
 
-            dataToPopulateFK = new DataShuffle(entityCardinalityMany, dataToPopulateFK).ShuffleData(rowCount);
-            var newColumnName = entityCardinalityMany.ColumnName;
+
+
+            if (entityCardinalityOne.Modality == "zero")
+            {
+                dataToPopulateFK = new DataShuffle(entityCardinalityOne, dataToPopulateFK).TakeDataForModalityZero(rowCount);
+
+            }
+            else if (entityCardinalityOne.Modality=="one")
+            {
+                dataToPopulateFK = new DataShuffle(entityCardinalityOne, dataToPopulateFK).TakeDataForModalityOne(rowCount);
+            }
+
+            var newColumnName = entityCardinalityOne.ColumnName;
 
             fakeDataTables.Find(x => x.Name == entityCardinalityMany.TableName)
                 .FakeDataColumns.Add(new FakeDataColumn(newColumnName, dataToPopulateFK));
+
         }
 
-        private List<string> TakeColumnWithPK(RelationshipEntity entityCardinalityOne)
-        {
-            return fakeDataTables.Find(x => x.Name == entityCardinalityOne.TableName)
-                .FakeDataColumns.Find(y => y.Name == entityCardinalityOne.ColumnName).Data;
-        }
 
         private RelationshipEntity FindEntityWithOne()
         {
@@ -46,5 +56,46 @@ namespace DataGenerator.Services.Relationships
         {
             return relation.EntityOne.Cardinality == "many" ? relation.EntityOne : relation.EntityTwo;
         }
+
+        private List<string> TakeColumnWithPK(RelationshipEntity entityCardinalityMany)
+        {
+            return fakeDataTables.Find(x => x.Name == entityCardinalityMany.TableName)
+                .FakeDataColumns.Find(y => y.Name == entityCardinalityMany.ColumnName).Data;
+        }
+
+        /*  var entityCardinalityMany = FindEntityWithMany();
+          var entityCardinalityOne = FindEntityWithOne();
+
+          var modalityInCardinalityMany = entityCardinalityMany.Modality;
+          var modalityInCardinalityOne = entityCardinalityOne.Modality;
+
+          List<string> dataToPopulateFK = TakeColumnWithPK(entityCardinalityOne);
+          int rowCount = unchecked((int)fakeDataTables.Find(x => x.Name == entityCardinalityMany.TableName).RowCount);
+
+          dataToPopulateFK = new DataShuffle(entityCardinalityMany, dataToPopulateFK).ShuffleData(rowCount);
+          var newColumnName = entityCardinalityMany.ColumnName;
+
+          fakeDataTables.Find(x => x.Name == entityCardinalityMany.TableName)
+              .FakeDataColumns.Add(new FakeDataColumn(newColumnName, dataToPopulateFK));
+      }
+
+
+
+      private List<string> TakeColumnWithPK(RelationshipEntity entityCardinalityOne)
+      {
+          return fakeDataTables.Find(x => x.Name == entityCardinalityOne.TableName)
+              .FakeDataColumns.Find(y => y.Name == entityCardinalityOne.ColumnName).Data;
+      }
+
+      private RelationshipEntity FindEntityWithOne()
+      {
+          return relation.EntityOne.Cardinality == "one" ? relation.EntityOne : relation.EntityTwo;
+      }
+
+      private RelationshipEntity FindEntityWithMany()
+      {
+          return relation.EntityOne.Cardinality == "many" ? relation.EntityOne : relation.EntityTwo;
+      }
+  }*/
     }
 }

@@ -1,19 +1,11 @@
-﻿using System;
-using System.Collections.Generic;
-using System.IO;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
-using DataGenerator.Data;
-using DataGenerator.Models;
+﻿using DataGenerator.Models;
 using DataGenerator.Models.Options;
 using DataGenerator.Services;
 using DataGenerator.Services.FileCompression;
 using DataGenerator.Services.Relationships;
 using DataGenerator.Services.Validators;
-using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
-using Microsoft.EntityFrameworkCore;
+using System.Collections.Generic;
 
 namespace DataGenerator.Controllers
 {
