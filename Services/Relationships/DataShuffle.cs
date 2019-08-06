@@ -1,8 +1,6 @@
-﻿using System;
+﻿using DataGenerator.Models.Relationships;
+using System;
 using System.Collections.Generic;
-using System.Linq;
-using System.Threading.Tasks;
-using DataGenerator.Models.Relationships;
 
 namespace DataGenerator.Services.Relationships
 {
@@ -22,13 +20,13 @@ namespace DataGenerator.Services.Relationships
         {
             var listWithFK = new List<string>();
             var dataUseToFillFK = new List<string>();
-                dataUseToFillFK.AddRange(dataToPopulateFK);
+            dataUseToFillFK.AddRange(dataToPopulateFK);
             for (int i = 0; i < rowCount; i++)
             {
                 int randomIndex = random.Next(dataUseToFillFK.Count);
                 listWithFK.Add(dataUseToFillFK[randomIndex]);
                 dataUseToFillFK.RemoveAt(randomIndex);
-                if (dataUseToFillFK.Count==0)
+                if (dataUseToFillFK.Count == 0)
                 {
                     dataUseToFillFK.AddRange(dataToPopulateFK);
                 }
@@ -43,7 +41,7 @@ namespace DataGenerator.Services.Relationships
             var listToAddNulls = CreateDataForC1M1CManyM1(rowCount);
             var percentNullInDuplicateValues = 5;
             var percentChangeToNumber = (((double)percentNullInDuplicateValues / 100));
-            int howManyValuesChangeToNull = Convert.ToInt32((rowCount)*percentChangeToNumber);
+            int howManyValuesChangeToNull = Convert.ToInt32((rowCount) * percentChangeToNumber);
 
             if (rowCount > countPopulateFK)
             {
@@ -60,18 +58,19 @@ namespace DataGenerator.Services.Relationships
 
         internal List<string> CreateDataForC1M1CManyM0(int rowCount)
         {
-            int countPopulateFK = dataToPopulateFK.Count;
             var listToAddFKOtherThanPKFromParentTable = CreateDataForC1M1CManyM1(rowCount);
+            int countPopulateFK = dataToPopulateFK.Count;
             var percentOtherFK = 5;
             var percentChangeToNumber = (((double)percentOtherFK / 100));
             int howManyValuesChangeToOtherFK = Convert.ToInt32((rowCount) * percentChangeToNumber);
+            int rangeValueWithoutPKInParentTable = 300;
 
             if (rowCount > countPopulateFK)
             {
                 for (int i = 0; i < howManyValuesChangeToOtherFK; i++)
                 {
-                    var indexChangeToRandomNumber = random.Next(countPopulateFK+1, rowCount);
-                    var randomPK = random.Next(countPopulateFK, rowCount + 300).ToString();
+                    var indexChangeToRandomNumber = random.Next(countPopulateFK + 1, rowCount);
+                    var randomPK = random.Next(countPopulateFK, rowCount + rangeValueWithoutPKInParentTable).ToString();
                     listToAddFKOtherThanPKFromParentTable.RemoveAt(indexChangeToRandomNumber);
                     listToAddFKOtherThanPKFromParentTable.Insert(indexChangeToRandomNumber, randomPK);
                 }
@@ -82,47 +81,23 @@ namespace DataGenerator.Services.Relationships
 
         internal List<string> CreateDataForC1M0CManyM0(int rowCount)
         {
-            throw new NotImplementedException();
+            var listWithAnswer = CreateDataForC1M1CManyM0(rowCount);
+
+            int countPopulateFK = dataToPopulateFK.Count;
+            var percentNullInDuplicateValues = 5;
+            var percentChangeToNumber = (((double)percentNullInDuplicateValues / 100));
+            int howManyValuesChangeToNull = Convert.ToInt32((rowCount) * percentChangeToNumber);
+
+            if (rowCount > countPopulateFK)
+            {
+                for (int i = 0; i < howManyValuesChangeToNull; i++)
+                {
+                    var indexChangeToNull = random.Next(rowCount);
+                    listWithAnswer.RemoveAt(indexChangeToNull);
+                    listWithAnswer.Insert(indexChangeToNull, null);
+                }
+            }
+            return listWithAnswer;
         }
-
-
-
-
-
-        /* public List<string> ShuffleData(int rowCount)
-         {
-             if (entityCardinalityMany.Modality=="one")
-             {
-                 return CreateListWithoutNull(rowCount);
-             }
-             else
-             {
-                 return CreateListWithNulls(rowCount);
-             }
-         }
-
-         private List<string> CreateListWithNulls(int rowCount, double nullPercent = 5.0)
-         {
-             var convertFromPercent = nullPercent / 100;
-             List<string> answer = CreateListWithoutNull(rowCount);
-             for (int i = 0; i < answer.Count * convertFromPercent; i++)
-             {
-                 var positionToChange = random.Next(rowCount);
-                 answer.RemoveAt(positionToChange);
-                 answer.Insert(positionToChange, null);
-             }
-             return answer;
-         }
-
-
-         private List<string> CreateListWithoutNull(int rowCount)
-         {
-             List<string> answer = new List<string>();
-             while (answer.Count()<rowCount)
-             {
-                 answer.Add(dataToPopulateFK[random.Next(dataToPopulateFK.Count())]);
-             }
-             return answer;
-         }*/
     }
 }
