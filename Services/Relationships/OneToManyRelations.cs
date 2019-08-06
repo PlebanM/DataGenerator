@@ -28,15 +28,30 @@ namespace DataGenerator.Services.Relationships
             int rowCount = unchecked((int)fakeDataTables.Find(x => x.Name == entityCardinalityMany.TableName).RowCount);
 
 
-
-            if (entityCardinalityOne.Modality == "zero")
+            if (entityCardinalityMany.Modality == "one")
             {
-                dataToPopulateFK = new DataShuffle(entityCardinalityOne, dataToPopulateFK).TakeDataForModalityZero(rowCount);
 
+                if (entityCardinalityOne.Modality == "zero")
+                {
+                    dataToPopulateFK = new DataShuffle(entityCardinalityOne, dataToPopulateFK).CreateDataForC1M0CManyM1(rowCount);
+
+                }
+                else if (entityCardinalityOne.Modality=="one")
+                {
+                    dataToPopulateFK = new DataShuffle(entityCardinalityOne, dataToPopulateFK).CreateDataForC1M1CManyM1(rowCount);
+                }
             }
-            else if (entityCardinalityOne.Modality=="one")
+            else if(entityCardinalityMany.Modality == "zero")
             {
-                dataToPopulateFK = new DataShuffle(entityCardinalityOne, dataToPopulateFK).TakeDataForModalityOne(rowCount);
+                if (entityCardinalityOne.Modality == "zero")
+                {
+                    dataToPopulateFK = new DataShuffle(entityCardinalityOne, dataToPopulateFK).CreateDataForC1M0CManyM0(rowCount);
+
+                }
+                else if (entityCardinalityOne.Modality == "one")
+                {
+                    dataToPopulateFK = new DataShuffle(entityCardinalityOne, dataToPopulateFK).CreateDataForC1M1CManyM0(rowCount);
+                }
             }
 
             var newColumnName = entityCardinalityOne.ColumnName;

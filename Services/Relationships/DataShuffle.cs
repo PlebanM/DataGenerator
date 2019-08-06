@@ -18,7 +18,7 @@ namespace DataGenerator.Services.Relationships
             this.dataToPopulateFK = dataToPopulateFK;
         }
 
-        public List<string> TakeDataForModalityOne(int rowCount)
+        public List<string> CreateDataForC1M1CManyM1(int rowCount)
         {
             var listWithFK = new List<string>();
             var dataUseToFillFK = new List<string>();
@@ -37,15 +37,52 @@ namespace DataGenerator.Services.Relationships
             return listWithFK;
         }
 
-        internal List<string> TakeDataForModalityZero(int rowCount)
+        internal List<string> CreateDataForC1M0CManyM1(int rowCount)
         {
-            var listToAddNulls = TakeDataForModalityOne(rowCount);
+            int countPopulateFK = dataToPopulateFK.Count;
+            var listToAddNulls = CreateDataForC1M1CManyM1(rowCount);
+            var percentNullInDuplicateValues = 5;
+            var percentChangeToNumber = (((double)percentNullInDuplicateValues / 100));
+            int howManyValuesChangeToNull = Convert.ToInt32((rowCount)*percentChangeToNumber);
 
-            if (true)
+            if (rowCount > countPopulateFK)
             {
-
+                for (int i = 0; i < howManyValuesChangeToNull; i++)
+                {
+                    var indexChangeToNull = random.Next(rowCount);
+                    listToAddNulls.RemoveAt(indexChangeToNull);
+                    listToAddNulls.Insert(indexChangeToNull, null);
+                }
             }
 
+            return listToAddNulls;
+        }
+
+        internal List<string> CreateDataForC1M1CManyM0(int rowCount)
+        {
+            int countPopulateFK = dataToPopulateFK.Count;
+            var listToAddFKOtherThanPKFromParentTable = CreateDataForC1M1CManyM1(rowCount);
+            var percentOtherFK = 5;
+            var percentChangeToNumber = (((double)percentOtherFK / 100));
+            int howManyValuesChangeToOtherFK = Convert.ToInt32((rowCount) * percentChangeToNumber);
+
+            if (rowCount > countPopulateFK)
+            {
+                for (int i = 0; i < howManyValuesChangeToOtherFK; i++)
+                {
+                    var indexChangeToRandomNumber = random.Next(countPopulateFK+1, rowCount);
+                    var randomPK = random.Next(countPopulateFK, rowCount + 300).ToString();
+                    listToAddFKOtherThanPKFromParentTable.RemoveAt(indexChangeToRandomNumber);
+                    listToAddFKOtherThanPKFromParentTable.Insert(indexChangeToRandomNumber, randomPK);
+                }
+            }
+
+            return listToAddFKOtherThanPKFromParentTable;
+        }
+
+        internal List<string> CreateDataForC1M0CManyM0(int rowCount)
+        {
+            throw new NotImplementedException();
         }
 
 
