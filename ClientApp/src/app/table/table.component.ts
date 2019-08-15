@@ -9,7 +9,7 @@ import { ColumnType } from '../models/column-type';
 })
 export class TableComponent implements OnInit {
 
-  private columnTypes: Array<ColumnType>;
+  columnTypes: Array<ColumnType>;
 
   constructor(private columnTypeGetter: ColumnTypesGetterService) { }
 
