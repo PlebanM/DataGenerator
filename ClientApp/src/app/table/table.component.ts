@@ -1,5 +1,6 @@
 import { Component, OnInit } from '@angular/core';
 import { ColumnTypesGetterService } from '../services/column-types-getter.service';
+import { ColumnType } from '../models/column-type';
 
 @Component({
   selector: 'app-table',
@@ -8,15 +9,14 @@ import { ColumnTypesGetterService } from '../services/column-types-getter.servic
 })
 export class TableComponent implements OnInit {
 
+  private columnTypes: Array<ColumnType>;
+
   constructor(private columnTypeGetter: ColumnTypesGetterService) { }
 
-  getColumnTypes(): void {
-    this.columnTypeGetter.getColumnTypes().subscribe(res => {
-      console.log(res);
-    });
-  }
-
   ngOnInit() {
+    this.columnTypeGetter.getColumnTypes().subscribe(res => {
+      this.columnTypes = res;
+    });
   }
 
 }
