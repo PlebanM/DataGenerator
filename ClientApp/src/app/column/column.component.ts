@@ -1,5 +1,6 @@
 import { Component, OnInit, Input } from '@angular/core';
 import { ColumnType } from '../models/column-type';
+import { OptionTypeFinderService } from '../services/option-type-finder.service';
 
 @Component({
   selector: 'app-column',
@@ -11,9 +12,15 @@ export class ColumnComponent implements OnInit {
   @Input()
   columnTypes: Array<ColumnType>;
 
-  constructor() { }
+  selectedType: string;
+
+  constructor(private optionTypeFinder: OptionTypeFinderService) { }
 
   ngOnInit() {
+  }
+
+  getType(optionName: string): string {
+    return this.optionTypeFinder.getType(optionName);
   }
 
 }
