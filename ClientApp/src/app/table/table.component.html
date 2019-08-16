@@ -3,25 +3,5 @@
     <mat-form-field>
         <input matInput placeholder="Number Of Rows">
     </mat-form-field>
-    <div class="column">
-        <mat-form-field>
-            <input matInput placeholder="Table Name">
-        </mat-form-field>
-        <mat-form-field>
-            <mat-select placeholder="Type">
-                <div *ngIf="columnTypes">
-                    <mat-option *ngFor="let columnType of columnTypes" [value]="columnType.type.name">
-                        {{ columnType.type.name }}
-                    </mat-option>
-                </div>
-            </mat-select>
-        </mat-form-field>
-        <mat-expansion-panel>
-            <mat-expansion-panel-header>
-                Options
-            </mat-expansion-panel-header>
-            content
-        </mat-expansion-panel>
-    </div>
-
+    <app-column [columnTypes]="columnTypes"></app-column>
 </div>

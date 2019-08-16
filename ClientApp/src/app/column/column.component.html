@@ -1,0 +1,20 @@
+<div class="column">
+    <mat-form-field>
+        <input matInput placeholder="Column Name">
+    </mat-form-field>
+    <mat-form-field>
+        <mat-select placeholder="Type">
+            <div *ngIf="columnTypes">
+                <mat-option *ngFor="let columnType of columnTypes" [value]="columnType.type">
+                    {{ columnType.type.name }}
+                </mat-option>
+            </div>
+        </mat-select>
+    </mat-form-field>
+    <mat-expansion-panel>
+        <mat-expansion-panel-header>
+            Options
+        </mat-expansion-panel-header>
+        content
+    </mat-expansion-panel>
+</div>

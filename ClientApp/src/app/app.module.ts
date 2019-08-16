@@ -11,11 +11,13 @@ import { MatFormFieldModule } from '@angular/material/form-field';
 import { MatSelectModule } from '@angular/material/select';
 import { MatInputModule } from '@angular/material/input';
 import { MatExpansionModule } from '@angular/material/expansion';
+import { ColumnComponent } from './column/column.component';
 
 @NgModule({
   declarations: [
     AppComponent,
     TableComponent,
+    ColumnComponent,
   ],
   imports: [
     BrowserModule,
