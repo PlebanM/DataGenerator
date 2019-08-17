@@ -9,6 +9,8 @@ import { OptionTypeFinderService } from '../services/option-type-finder.service'
 })
 export class ColumnComponent implements OnInit {
 
+  _ref: any;
+
   @Input()
   columnTypes: Array<ColumnType>;
 
@@ -21,6 +23,10 @@ export class ColumnComponent implements OnInit {
 
   getType(optionName: string): string {
     return this.optionTypeFinder.getType(optionName);
+  }
+
+  removeObject(): void {
+    this._ref.destroy();
   }
 
 }

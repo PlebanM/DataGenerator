@@ -3,5 +3,9 @@
     <mat-form-field>
         <input matInput placeholder="Number Of Rows">
     </mat-form-field>
-    <app-column [columnTypes]="columnTypes"></app-column>
+    <div #columns>
+
+    </div>
+    <button mat-raised-button color="primary" (click)="addColumn()">Add column</button>
+    <!-- <app-column [columnTypes]="columnTypes"></app-column> -->
 </div>
