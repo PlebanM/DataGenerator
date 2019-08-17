@@ -1,4 +1,4 @@
-import { Component, OnInit, Input } from '@angular/core';
+import { Component, OnInit, Input, Output, EventEmitter, ComponentRef } from '@angular/core';
 import { ColumnType } from '../models/column-type';
 import { OptionTypeFinderService } from '../services/option-type-finder.service';
 
@@ -14,6 +14,9 @@ export class ColumnComponent implements OnInit {
   @Input()
   columnTypes: Array<ColumnType>;
 
+  @Output()
+  deleteEvent = new EventEmitter<ComponentRef<ColumnComponent>>();
+
   selectedType: string;
 
   constructor(private optionTypeFinder: OptionTypeFinderService) { }
@@ -26,6 +29,7 @@ export class ColumnComponent implements OnInit {
   }
 
   removeObject(): void {
+    this.deleteEvent.emit(this._ref);
     this._ref.destroy();
   }
 

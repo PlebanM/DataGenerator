@@ -1,8 +1,7 @@
-import { Component, OnInit, ViewChild, ViewContainerRef, ComponentFactoryResolver } from '@angular/core';
+import { Component, OnInit, ViewChild, ViewContainerRef, ComponentFactoryResolver, ComponentRef } from '@angular/core';
 import { ColumnTypesGetterService } from '../services/column-types-getter.service';
 import { ColumnType } from '../models/column-type';
 import { ColumnComponent } from '../column/column.component';
-import { throwToolbarMixedModesError } from '@angular/material/toolbar';
 
 @Component({
   selector: 'app-table',
@@ -14,6 +13,7 @@ export class TableComponent implements OnInit {
   _ref: any;
 
   columnTypes: Array<ColumnType>;
+  columns: Array<ComponentRef<ColumnComponent>> = [];
 
   @ViewChild('columns', { static: true, read: ViewContainerRef })
   container: ViewContainerRef;
@@ -29,8 +29,15 @@ export class TableComponent implements OnInit {
   addColumn(): void {
     let column = this.crf.resolveComponentFactory(ColumnComponent);
     let columnComponent = this.container.createComponent(column);
-    columnComponent.instance.columnTypes = this.columnTypes;
-    columnComponent.instance._ref = columnComponent;
+    let instance = columnComponent.instance;
+    instance.deleteEvent.subscribe(this.onColumnDelete.bind(this));
+    instance.columnTypes = this.columnTypes;
+    instance._ref = columnComponent;
+    this.columns.push(columnComponent);
+  }
+
+  onColumnDelete(ref: ComponentRef<ColumnComponent>) {
+    this.columns = this.columns.filter(elem => elem != ref);
   }
 
   removeObject(): void {
