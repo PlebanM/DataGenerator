@@ -1,10 +1,12 @@
 <div class="table">
     <h2>Table</h2>
     <mat-form-field>
-        <input matInput placeholder="Number Of Rows">
+        <input matInput placeholder="Table name">
+    </mat-form-field>
+    <mat-form-field>
+        <input matInput placeholder="Number of rows">
     </mat-form-field>
     <div #columns>
-
     </div>
     <button mat-raised-button color="primary" (click)="addColumn()">Add column</button>
     <!-- <app-column [columnTypes]="columnTypes"></app-column> -->
