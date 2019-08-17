@@ -1,0 +1,43 @@
+<div class="column">
+    <mat-form-field>
+        <input matInput placeholder="Column Name">
+    </mat-form-field>
+    <mat-form-field>
+        <mat-select placeholder="Type" [(ngModel)]="selectedType">
+            <div *ngIf="columnTypes">
+                <mat-option *ngFor="let columnType of columnTypes" [value]="columnType">
+                    {{ columnType.type.name }}
+                </mat-option>
+            </div>
+        </mat-select>
+    </mat-form-field>
+    <mat-expansion-panel>
+        <mat-expansion-panel-header>
+            Options
+        </mat-expansion-panel-header>
+        <div *ngIf="selectedType">
+            <div *ngFor="let option of selectedType.options">
+                <div *ngIf="getType(option.name) == 'input'; then input"></div>
+                <div *ngIf="getType(option.name) == 'checkbox'; then checkbox"></div>
+                <div *ngIf="getType(option.name) == 'date'; then date"></div>
+
+                <ng-template #input>
+                    <mat-form-field>
+                        <input matInput placeholder={{option.name}}>
+                    </mat-form-field>
+                </ng-template>
+                <ng-template #checkbox>
+                    <mat-checkbox>{{ option.name }}</mat-checkbox>
+                </ng-template>
+                <ng-template #date>
+                    <mat-form-field>
+                        <input matInput [matDatepicker]="picker" placeholder={{option.name}}>
+                        <mat-datepicker-toggle matSuffix [for]="picker"></mat-datepicker-toggle>
+                        <mat-datepicker #picker startView="year"></mat-datepicker>
+                    </mat-form-field>
+                </ng-template>
+            </div>
+        </div>
+    </mat-expansion-panel>
+    <button mat-raised-button color="warn" (click)="removeObject()">Remove</button>
+</div>

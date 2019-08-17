@@ -1,5 +1,8 @@
-import { Component, OnInit } from '@angular/core';
+import { Component, OnInit, ViewChild, ViewContainerRef, ComponentFactoryResolver } from '@angular/core';
 import { ColumnTypesGetterService } from '../services/column-types-getter.service';
+import { ColumnType } from '../models/column-type';
+import { ColumnComponent } from '../column/column.component';
+import { throwToolbarMixedModesError } from '@angular/material/toolbar';
 
 @Component({
   selector: 'app-table',
@@ -8,15 +11,30 @@ import { ColumnTypesGetterService } from '../services/column-types-getter.servic
 })
 export class TableComponent implements OnInit {
 
-  constructor(private columnTypeGetter: ColumnTypesGetterService) { }
+  _ref: any;
 
-  getColumnTypes(): void {
+  columnTypes: Array<ColumnType>;
+
+  @ViewChild('columns', { static: true, read: ViewContainerRef })
+  container: ViewContainerRef;
+
+  constructor(private columnTypeGetter: ColumnTypesGetterService, private crf: ComponentFactoryResolver) { }
+
+  ngOnInit() {
     this.columnTypeGetter.getColumnTypes().subscribe(res => {
-      console.log(res);
+      this.columnTypes = res;
     });
   }
 
-  ngOnInit() {
+  addColumn(): void {
+    let column = this.crf.resolveComponentFactory(ColumnComponent);
+    let columnComponent = this.container.createComponent(column);
+    columnComponent.instance.columnTypes = this.columnTypes;
+    columnComponent.instance._ref = columnComponent;
+  }
+
+  removeObject(): void {
+    this._ref.destroy();
   }
 
 }
