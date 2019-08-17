@@ -17,12 +17,14 @@ import { MatButtonModule } from '@angular/material/button';
 import { ColumnComponent } from './column/column.component';
 import { FormsModule } from '@angular/forms';
 import { MatNativeDateModule } from '@angular/material/core';
+import { DataFormComponent } from './data-form/data-form.component';
 
 @NgModule({
   declarations: [
     AppComponent,
     TableComponent,
     ColumnComponent,
+    DataFormComponent,
   ],
   imports: [
     BrowserModule,
@@ -42,6 +44,9 @@ import { MatNativeDateModule } from '@angular/material/core';
   ],
   providers: [],
   bootstrap: [AppComponent],
-  entryComponents: [ColumnComponent]
+  entryComponents: [
+    ColumnComponent,
+    TableComponent
+  ]
 })
 export class AppModule { }

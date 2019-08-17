@@ -2,6 +2,7 @@ import { Component, OnInit, ViewChild, ViewContainerRef, ComponentFactoryResolve
 import { ColumnTypesGetterService } from '../services/column-types-getter.service';
 import { ColumnType } from '../models/column-type';
 import { ColumnComponent } from '../column/column.component';
+import { throwToolbarMixedModesError } from '@angular/material/toolbar';
 
 @Component({
   selector: 'app-table',
@@ -9,6 +10,8 @@ import { ColumnComponent } from '../column/column.component';
   styleUrls: ['./table.component.css']
 })
 export class TableComponent implements OnInit {
+
+  _ref: any;
 
   columnTypes: Array<ColumnType>;
 
@@ -28,6 +31,10 @@ export class TableComponent implements OnInit {
     let columnComponent = this.container.createComponent(column);
     columnComponent.instance.columnTypes = this.columnTypes;
     columnComponent.instance._ref = columnComponent;
+  }
+
+  removeObject(): void {
+    this._ref.destroy();
   }
 
 }
