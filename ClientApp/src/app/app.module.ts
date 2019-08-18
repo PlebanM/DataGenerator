@@ -18,6 +18,7 @@ import { ColumnComponent } from './column/column.component';
 import { FormsModule, ReactiveFormsModule } from '@angular/forms';
 import { MatNativeDateModule } from '@angular/material/core';
 import { DataFormComponent } from './data-form/data-form.component';
+import { DatePipe } from '@angular/common';
 
 @NgModule({
   declarations: [
@@ -43,7 +44,7 @@ import { DataFormComponent } from './data-form/data-form.component';
     FormsModule,
     ReactiveFormsModule
   ],
-  providers: [],
+  providers: [DatePipe],
   bootstrap: [AppComponent],
   entryComponents: [
     ColumnComponent,
