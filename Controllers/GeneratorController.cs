@@ -33,7 +33,7 @@ namespace DataGenerator.Controllers
         }
         
         // GET: api/Generator
-        [HttpGet]
+        [HttpPost]
         public ActionResult Get(GeneratorSetupData generatorSetupData)
         {
             ValidationResult validationResult = validator.Validate(generatorSetupData);
