@@ -19,6 +19,7 @@ import { FormsModule, ReactiveFormsModule } from '@angular/forms';
 import { MatNativeDateModule } from '@angular/material/core';
 import { DataFormComponent } from './data-form/data-form.component';
 import { DatePipe } from '@angular/common';
+import { TableDataFormComponent } from './table-data-form/table-data-form.component';
 
 @NgModule({
   declarations: [
@@ -26,6 +27,7 @@ import { DatePipe } from '@angular/common';
     TableComponent,
     ColumnComponent,
     DataFormComponent,
+    TableDataFormComponent,
   ],
   imports: [
     BrowserModule,

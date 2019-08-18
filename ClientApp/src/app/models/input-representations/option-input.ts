@@ -4,9 +4,7 @@ import { OptionTypeFinderService } from 'src/app/services/option-type-finder.ser
 import { DatePipe } from '@angular/common';
 
 
-export class OptionInput {
-
-}
+export class OptionInput { }
 
 @Injectable({
     providedIn: "root"

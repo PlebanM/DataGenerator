@@ -2,7 +2,7 @@ import { Component, OnInit, Input, Output, EventEmitter, ComponentRef } from '@a
 import { ColumnType } from '../models/column-type';
 import { OptionTypeFinderService } from '../services/option-type-finder.service';
 import { FormGroup, FormControl } from '@angular/forms';
-import { ColumnInputAdapter } from '../models/input-representations/column-input';
+import { ColumnInputAdapter, ColumnInput } from '../models/input-representations/column-input';
 
 @Component({
   selector: 'app-column',
@@ -23,14 +23,15 @@ export class ColumnComponent implements OnInit {
 
   columnGroup: FormGroup;
 
-  constructor(private optionTypeFinder: OptionTypeFinderService, private columnInputAdapter: ColumnInputAdapter) { }
-
-  ngOnInit() {
+  constructor(private optionTypeFinder: OptionTypeFinderService, private columnInputAdapter: ColumnInputAdapter) {
     this.columnGroup = new FormGroup({
       name: new FormControl(),
       type: new FormControl(),
       options: new FormGroup({})
     })
+  }
+
+  ngOnInit() {
   }
 
   getType(optionName: string): string {
@@ -65,9 +66,10 @@ export class ColumnComponent implements OnInit {
   }
 
   //to delete
-  getInputRepresentation() {
-    console.log(this.columnInputAdapter.adapt(this.columnGroup.getRawValue()));
-    console.log(JSON.stringify(this.columnInputAdapter.adapt(this.columnGroup.getRawValue())));
+  getInputRepresentation(): ColumnInput {
+    // console.log(this.columnInputAdapter.adapt(this.columnGroup.getRawValue()));
+    // console.log(JSON.stringify(this.columnInputAdapter.adapt(this.columnGroup.getRawValue())));
+    return this.columnInputAdapter.adapt(this.columnGroup.getRawValue());
   }
 
 }
