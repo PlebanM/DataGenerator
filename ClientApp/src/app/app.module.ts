@@ -15,9 +15,11 @@ import { MatCheckboxModule } from '@angular/material/checkbox';
 import { MatDatepickerModule } from '@angular/material/datepicker';
 import { MatButtonModule } from '@angular/material/button';
 import { ColumnComponent } from './column/column.component';
-import { FormsModule } from '@angular/forms';
+import { FormsModule, ReactiveFormsModule } from '@angular/forms';
 import { MatNativeDateModule } from '@angular/material/core';
 import { DataFormComponent } from './data-form/data-form.component';
+import { DatePipe } from '@angular/common';
+import { TableDataFormComponent } from './table-data-form/table-data-form.component';
 
 @NgModule({
   declarations: [
@@ -25,6 +27,7 @@ import { DataFormComponent } from './data-form/data-form.component';
     TableComponent,
     ColumnComponent,
     DataFormComponent,
+    TableDataFormComponent,
   ],
   imports: [
     BrowserModule,
@@ -40,9 +43,10 @@ import { DataFormComponent } from './data-form/data-form.component';
     MatDatepickerModule,
     MatNativeDateModule,
     MatButtonModule,
-    FormsModule
+    FormsModule,
+    ReactiveFormsModule
   ],
-  providers: [],
+  providers: [DatePipe],
   bootstrap: [AppComponent],
   entryComponents: [
     ColumnComponent,

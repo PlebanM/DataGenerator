@@ -1,9 +1,9 @@
-<div class="column">
+<div class="column" [formGroup]="columnGroup">
     <mat-form-field>
-        <input matInput placeholder="Column Name">
+        <input matInput placeholder="Column Name" formControlName="name">
     </mat-form-field>
     <mat-form-field>
-        <mat-select placeholder="Type" [(ngModel)]="selectedType">
+        <mat-select placeholder="Type" formControlName="type" (selectionChange)="onSelectedTypeChange()">
             <div *ngIf="columnTypes">
                 <mat-option *ngFor="let columnType of columnTypes" [value]="columnType">
                     {{ columnType.type.name }}
@@ -15,7 +15,7 @@
         <mat-expansion-panel-header>
             Options
         </mat-expansion-panel-header>
-        <div *ngIf="selectedType">
+        <div formGroupName="options" *ngIf="selectedType">
             <div *ngFor="let option of selectedType.options">
                 <div *ngIf="getType(option.name) == 'input'; then input"></div>
                 <div *ngIf="getType(option.name) == 'checkbox'; then checkbox"></div>
@@ -23,15 +23,16 @@
 
                 <ng-template #input>
                     <mat-form-field>
-                        <input matInput placeholder={{option.name}}>
+                        <input matInput placeholder={{option.name}} formControlName={{option.name}}>
                     </mat-form-field>
                 </ng-template>
                 <ng-template #checkbox>
-                    <mat-checkbox>{{ option.name }}</mat-checkbox>
+                    <mat-checkbox formControlName={{option.name}}>{{ option.name }}</mat-checkbox>
                 </ng-template>
                 <ng-template #date>
                     <mat-form-field>
-                        <input matInput [matDatepicker]="picker" placeholder={{option.name}}>
+                        <input matInput [matDatepicker]="picker" placeholder={{option.name}}
+                            formControlName={{option.name}}>
                         <mat-datepicker-toggle matSuffix [for]="picker"></mat-datepicker-toggle>
                         <mat-datepicker #picker startView="year"></mat-datepicker>
                     </mat-form-field>
@@ -40,4 +41,7 @@
         </div>
     </mat-expansion-panel>
     <button mat-raised-button color="warn" (click)="removeObject()">Remove</button>
+    <button mat-raised-button color="warn" (click)="showGroup()">
+        <!--to delete--> Show group(debug)</button>
+
 </div>
