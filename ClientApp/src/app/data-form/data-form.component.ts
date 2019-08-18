@@ -3,6 +3,7 @@ import { TableComponent } from '../table/table.component';
 import { FormGroup, FormControl, FormArray } from '@angular/forms';
 import { TableDataFormComponent } from '../table-data-form/table-data-form.component';
 import { DataFormInputAdapter } from '../models/input-representations/data-form-input';
+import { InputDataSenderService } from '../services/input-data-sender.service';
 
 @Component({
   selector: 'app-data-form',
@@ -15,7 +16,7 @@ export class DataFormComponent implements OnInit, AfterViewInit {
 
   formData: FormGroup;
 
-  constructor(private dataFormInputAdapter: DataFormInputAdapter) { }
+  constructor(private dataFormInputAdapter: DataFormInputAdapter, private sender: InputDataSenderService) { }
 
   ngOnInit(): void {
   }
@@ -30,8 +31,9 @@ export class DataFormComponent implements OnInit, AfterViewInit {
   }
 
   sendForm(): void {
-    console.log(this.formData.getRawValue());
-    console.log(this.dataFormInputAdapter.adapt(this.formData.getRawValue()));
-    console.log(JSON.stringify(this.dataFormInputAdapter.adapt(this.formData.getRawValue())));
+    // console.log(this.formData.getRawValue());
+    // console.log(this.dataFormInputAdapter.adapt(this.formData.getRawValue()));
+    // console.log(JSON.stringify(this.dataFormInputAdapter.adapt(this.formData.getRawValue())));
+    this.sender.send(this.dataFormInputAdapter.adapt(this.formData.getRawValue()));
   }
 }
