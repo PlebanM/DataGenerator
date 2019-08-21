@@ -7,7 +7,7 @@ import { DataFormInput } from '../models/input-representations/data-form-input';
 })
 export class InputDataSenderService {
 
-  private apiUrl = "https://localhost:44361/api/generator/";
+  private apiUrl = 'https://localhost:44361/api/generator/';
 
   constructor(private httpClient: HttpClient) { }
 

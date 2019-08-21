@@ -7,7 +7,7 @@ import { DatePipe } from '@angular/common';
 export class OptionInput { }
 
 @Injectable({
-    providedIn: "root"
+    providedIn: 'root'
 })
 export class OptionInputAdapter implements Adapter<OptionInput> {
 

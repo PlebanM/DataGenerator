@@ -2,8 +2,10 @@ import { Component, OnInit, ViewContainerRef, ViewChild, ComponentRef, Component
 import { TableComponent } from '../table/table.component';
 import { FormArray, FormControl, FormGroup } from '@angular/forms';
 import { TableInputAdapter } from '../models/input-representations/table-input';
+import { RelationshipsComponent } from '../relationships/relationships.component';
 
 @Component({
+  providers: [RelationshipsComponent],
   selector: 'app-table-data-form',
   templateUrl: './table-data-form.component.html',
   styleUrls: ['./table-data-form.component.css']
@@ -12,15 +14,17 @@ export class TableDataFormComponent implements OnInit {
 
   @ViewChild('tables', { static: true, read: ViewContainerRef })
   container: ViewContainerRef;
-
   tables: Array<ComponentRef<TableComponent>> = [];
   tablesFormArray = new FormArray([]);
+  notReadyToCreateRelations = false;
+  allTables: any[] = [];
 
-  constructor(private cfr: ComponentFactoryResolver, private tia: TableInputAdapter) { }
+  constructor(private relComp: RelationshipsComponent,
+              private cfr: ComponentFactoryResolver, private tia: TableInputAdapter) { }
 
   ngOnInit() {
   }
-
+ 
   addTable(): void {
     let tableFactory = this.cfr.resolveComponentFactory(TableComponent);
     let table = this.container.createComponent(tableFactory);
@@ -45,6 +49,13 @@ export class TableDataFormComponent implements OnInit {
       finalList.push(this.tia.adapt((<FormGroup>element).getRawValue()));
     });
     console.log(finalList);
+  }
+
+  addRelations() {
+    this.allTables = [];
+    this.tablesFormArray.controls.forEach(element => {
+      this.allTables.push(this.tia.adapt((<FormGroup>element).getRawValue()))
+    });
   }
 
 }

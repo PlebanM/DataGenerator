@@ -1,3 +1,4 @@
+import { RelationshipsComponent } from './../relationships/relationships.component';
 import { Component, OnInit, ComponentFactoryResolver, ViewChild, ViewContainerRef, ComponentRef, AfterViewInit } from '@angular/core';
 import { TableComponent } from '../table/table.component';
 import { FormGroup, FormControl, FormArray } from '@angular/forms';
@@ -6,16 +7,15 @@ import { DataFormInputAdapter } from '../models/input-representations/data-form-
 import { InputDataSenderService } from '../services/input-data-sender.service';
 
 @Component({
+  
   selector: 'app-data-form',
   templateUrl: './data-form.component.html',
   styleUrls: ['./data-form.component.css']
 })
 export class DataFormComponent implements OnInit, AfterViewInit {
 
-  @ViewChild('tableform', { static: false }) tables: TableDataFormComponent
-
+  @ViewChild('tableform', { static: false }) tables: TableDataFormComponent;
   formData: FormGroup;
-
   constructor(private dataFormInputAdapter: DataFormInputAdapter, private sender: InputDataSenderService) { }
 
   ngOnInit(): void {
@@ -28,6 +28,8 @@ export class DataFormComponent implements OnInit, AfterViewInit {
       relationships: new FormArray([]), //temporary
       tables: this.tables.tablesFormArray
     })
+    
+    
   }
 
   sendForm(): void {
@@ -36,4 +38,6 @@ export class DataFormComponent implements OnInit, AfterViewInit {
     // console.log(JSON.stringify(this.dataFormInputAdapter.adapt(this.formData.getRawValue())));
     this.sender.send(this.dataFormInputAdapter.adapt(this.formData.getRawValue()));
   }
+
+  
 }

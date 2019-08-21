@@ -7,7 +7,7 @@ export class TableInput {
 }
 
 @Injectable({
-    providedIn: "root"
+    providedIn: 'root'
 })
 
 export class TableInputAdapter implements Adapter<TableInput> {
@@ -15,7 +15,7 @@ export class TableInputAdapter implements Adapter<TableInput> {
     constructor(private columnInputAdapter: ColumnInputAdapter) { }
 
     adapt(toAdapt: any): TableInput {
-        let name = toAdapt.name;
+        const name = toAdapt.name;
         let rowCount = toAdapt.rowCount;
         let columnStructures = [];
         toAdapt.columnStructures.forEach(column => {

@@ -9,7 +9,7 @@ export class EntityInput {
 }
 
 @Injectable({
-    providedIn: "root"
+    providedIn: 'root'
 })
 export class EntityInputAdapter implements Adapter<EntityInput> {
     adapt(ex: any): EntityInput {

@@ -1,3 +1,4 @@
+import { RelationshipsComponent } from './relationships/relationships.component';
 import { BrowserModule } from '@angular/platform-browser';
 import { NgModule, ComponentFactoryResolver } from '@angular/core';
 
@@ -20,6 +21,7 @@ import { MatNativeDateModule } from '@angular/material/core';
 import { DataFormComponent } from './data-form/data-form.component';
 import { DatePipe } from '@angular/common';
 import { TableDataFormComponent } from './table-data-form/table-data-form.component';
+import {MatChipsModule} from '@angular/material/chips';
 
 @NgModule({
   declarations: [
@@ -28,6 +30,7 @@ import { TableDataFormComponent } from './table-data-form/table-data-form.compon
     ColumnComponent,
     DataFormComponent,
     TableDataFormComponent,
+    RelationshipsComponent
   ],
   imports: [
     BrowserModule,
@@ -44,7 +47,8 @@ import { TableDataFormComponent } from './table-data-form/table-data-form.compon
     MatNativeDateModule,
     MatButtonModule,
     FormsModule,
-    ReactiveFormsModule
+    ReactiveFormsModule,
+    MatChipsModule
   ],
   providers: [DatePipe],
   bootstrap: [AppComponent],

@@ -6,17 +6,17 @@ import { Injectable } from '@angular/core';
 
 export class DataFormInput {
     constructor(private settings: SettingsInput, private relationships: Array<RelationshipInput>,
-        private tables: Array<TableInput>) { }
+                private tables: Array<TableInput>) { }
 }
 
 @Injectable({
-    providedIn: "root"
+    providedIn: 'root'
 })
 export class DataFormInputAdapter implements Adapter<DataFormInput> {
 
     constructor(private settingsInputAdapter: SettingsInputAdapter,
-        private relationshipAdapter: RelationshipInputAdapter,
-        private tableInputAdapter: TableInputAdapter) { }
+                private relationshipAdapter: RelationshipInputAdapter,
+                private tableInputAdapter: TableInputAdapter) { }
 
     adapt(toAdapt: any): DataFormInput {
         let settings = this.settingsInputAdapter.adapt(null); //has to change
