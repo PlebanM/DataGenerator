@@ -3,6 +3,7 @@ import { ColumnType } from '../models/column-type';
 import { OptionTypeFinderService } from '../services/option-type-finder.service';
 import { FormGroup, FormControl } from '@angular/forms';
 import { ColumnInputAdapter, ColumnInput } from '../models/input-representations/column-input';
+import { OptionValidatorProviderService } from '../services/option-validator-provider.service';
 
 @Component({
   selector: 'app-column',
@@ -23,7 +24,9 @@ export class ColumnComponent implements OnInit {
 
   columnGroup: FormGroup;
 
-  constructor(private optionTypeFinder: OptionTypeFinderService, private columnInputAdapter: ColumnInputAdapter) {
+  constructor(private optionTypeFinder: OptionTypeFinderService,
+    private columnInputAdapter: ColumnInputAdapter,
+    private optionValidatorProvider: OptionValidatorProviderService) {
     this.columnGroup = new FormGroup({
       name: new FormControl(),
       type: new FormControl(),
@@ -60,7 +63,8 @@ export class ColumnComponent implements OnInit {
     let options = new FormGroup({});
     let columnType = this.columnGroup.get("type");
     columnType.value.options.forEach(element => {
-      options.addControl(element.name, new FormControl());
+      options.addControl(element.name,
+        new FormControl(null, this.optionValidatorProvider.getValidatorsFor(element.name)));
     });
     this.columnGroup.addControl("options", options);
   }
