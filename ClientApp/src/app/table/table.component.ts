@@ -2,7 +2,8 @@ import { Component, OnInit, ViewChild, ViewContainerRef, ComponentFactoryResolve
 import { ColumnTypesGetterService } from '../services/column-types-getter.service';
 import { ColumnType } from '../models/column-type';
 import { ColumnComponent } from '../column/column.component';
-import { FormArray, FormGroup, FormControl } from '@angular/forms';
+import { FormArray, FormGroup, FormControl, Validators } from '@angular/forms';
+import { TableValidatorProviderService } from '../services/table-validator-provider.service';
 
 @Component({
   selector: 'app-table',
@@ -18,15 +19,17 @@ export class TableComponent implements OnInit {
   columns: Array<ComponentRef<ColumnComponent>> = [];
 
   tableGroup: FormGroup = new FormGroup({
-    name: new FormControl(),
-    rowCount: new FormControl(),
-    columnStructures: new FormArray([])
+    name: new FormControl(null, Validators.required),
+    rowCount: new FormControl(null, this.tableValidatorProvider.getForRowCount()),
+    columnStructures: new FormArray([], this.tableValidatorProvider.getForColumnStructures())
   });
 
   @ViewChild('columns', { static: true, read: ViewContainerRef })
   container: ViewContainerRef;
 
-  constructor(private columnTypeGetter: ColumnTypesGetterService, private crf: ComponentFactoryResolver) { }
+  constructor(private columnTypeGetter: ColumnTypesGetterService,
+    private crf: ComponentFactoryResolver,
+    private tableValidatorProvider: TableValidatorProviderService) { }
 
   ngOnInit() {
     this.columnTypeGetter.getColumnTypes().subscribe(res => {
