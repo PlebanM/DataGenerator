@@ -1,7 +1,7 @@
 import { Component, OnInit, Input, Output, EventEmitter, ComponentRef } from '@angular/core';
 import { ColumnType } from '../models/column-type';
 import { OptionTypeFinderService } from '../services/options/option-type-finder.service';
-import { FormGroup, FormControl } from '@angular/forms';
+import { FormGroup, FormControl, Validators } from '@angular/forms';
 import { ColumnInputAdapter, ColumnInput } from '../models/input-representations/column-input';
 import { OptionValidatorProviderService } from '../services/options/option-validator-provider.service';
 import { OptionGroupValidatorProviderService } from '../services/options/option-group-validator-provider.service';
@@ -30,8 +30,8 @@ export class ColumnComponent implements OnInit {
     private optionValidatorProvider: OptionValidatorProviderService,
     private optionGroupValidatorProvider: OptionGroupValidatorProviderService) {
     this.columnGroup = new FormGroup({
-      name: new FormControl(),
-      type: new FormControl(),
+      name: new FormControl(null, Validators.required),
+      type: new FormControl(null, Validators.required),
       options: new FormGroup({})
     })
   }
