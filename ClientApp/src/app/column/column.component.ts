@@ -4,6 +4,7 @@ import { OptionTypeFinderService } from '../services/options/option-type-finder.
 import { FormGroup, FormControl } from '@angular/forms';
 import { ColumnInputAdapter, ColumnInput } from '../models/input-representations/column-input';
 import { OptionValidatorProviderService } from '../services/options/option-validator-provider.service';
+import { OptionGroupValidatorProviderService } from '../services/options/option-group-validator-provider.service';
 
 @Component({
   selector: 'app-column',
@@ -26,7 +27,8 @@ export class ColumnComponent implements OnInit {
 
   constructor(private optionTypeFinder: OptionTypeFinderService,
     private columnInputAdapter: ColumnInputAdapter,
-    private optionValidatorProvider: OptionValidatorProviderService) {
+    private optionValidatorProvider: OptionValidatorProviderService,
+    private optionGroupValidatorProvider: OptionGroupValidatorProviderService) {
     this.columnGroup = new FormGroup({
       name: new FormControl(),
       type: new FormControl(),
@@ -60,8 +62,8 @@ export class ColumnComponent implements OnInit {
 
   private repopulateOptions() {
     this.columnGroup.removeControl("options");
-    let options = new FormGroup({});
     let columnType = this.columnGroup.get("type");
+    let options = new FormGroup({}, this.optionGroupValidatorProvider.getValidatorsFor(columnType.value.type.name));
     columnType.value.options.forEach(element => {
       options.addControl(element.name,
         new FormControl(null, this.optionValidatorProvider.getValidatorsFor(element.name)));
