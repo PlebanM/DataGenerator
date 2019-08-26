@@ -1,9 +1,9 @@
 import { Component, OnInit, Input, Output, EventEmitter, ComponentRef } from '@angular/core';
 import { ColumnType } from '../models/column-type';
-import { OptionTypeFinderService } from '../services/option-type-finder.service';
+import { OptionTypeFinderService } from '../services/options/option-type-finder.service';
 import { FormGroup, FormControl } from '@angular/forms';
 import { ColumnInputAdapter, ColumnInput } from '../models/input-representations/column-input';
-import { OptionValidatorProviderService } from '../services/option-validator-provider.service';
+import { OptionValidatorProviderService } from '../services/options/option-validator-provider.service';
 
 @Component({
   selector: 'app-column',

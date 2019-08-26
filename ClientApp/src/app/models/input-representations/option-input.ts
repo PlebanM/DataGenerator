@@ -1,6 +1,6 @@
 import { Injectable } from '@angular/core';
 import { Adapter } from '../adapter';
-import { OptionTypeFinderService } from 'src/app/services/option-type-finder.service';
+import { OptionTypeFinderService } from 'src/app/services/options/option-type-finder.service';
 import { DatePipe } from '@angular/common';
 
 
