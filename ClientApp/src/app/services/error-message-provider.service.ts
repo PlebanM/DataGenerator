@@ -23,7 +23,8 @@ export class ErrorMessageProviderService {
     this.errorMessages.set("required", "This field is required.");
     this.errorMessages.set("notANumber", "Provide a number");
     this.errorMessages.set("min", "Number must be greater than ${this.min.min}");
-    this.errorMessages.set("uniqueColumnName", "All column names must be unique");
+    this.errorMessages.set("uniqueColumnName", "Column names must be unique");
+    this.errorMessages.set("uniqueTableName", "Table names must be unique");
   }
 
   getMessageForRandomError(errors: ValidationErrors): string {
