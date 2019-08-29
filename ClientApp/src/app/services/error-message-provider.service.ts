@@ -25,6 +25,7 @@ export class ErrorMessageProviderService {
     this.errorMessages.set("min", "Number must be greater than ${this.min.min}");
     this.errorMessages.set("uniqueColumnName", "Column names must be unique");
     this.errorMessages.set("uniqueTableName", "Table names must be unique");
+    this.errorMessages.set("fromDateGreaterThanToDate", "'From Date' cannot be greater than 'To Date'");
   }
 
   getMessageForRandomError(errors: ValidationErrors): string {

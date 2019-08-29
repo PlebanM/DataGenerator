@@ -1,6 +1,9 @@
 <div class="column" [formGroup]="columnGroup">
     <mat-form-field>
         <input matInput placeholder="Column Name" formControlName="name">
+        <mat-error *ngIf="columnGroup.controls['name']">
+            {{emp.getMessageForRandomError(columnGroup.controls["name"].errors)}}
+        </mat-error>
     </mat-form-field>
     <mat-form-field>
         <mat-select placeholder="Type" formControlName="type" (selectionChange)="onSelectedTypeChange()">
@@ -10,6 +13,9 @@
                 </mat-option>
             </div>
         </mat-select>
+        <mat-error *ngIf="columnGroup.controls['type']">
+            {{emp.getMessageForRandomError(columnGroup.controls["type"].errors)}}
+        </mat-error>
     </mat-form-field>
     <mat-expansion-panel>
         <mat-expansion-panel-header>
@@ -39,6 +45,9 @@
                 </ng-template>
             </div>
         </div>
+        <mat-error *ngIf="columnGroup.controls['options']">
+            {{emp.getMessageForRandomError(columnGroup.controls["options"].errors)}}
+        </mat-error>
     </mat-expansion-panel>
     <button mat-raised-button color="warn" (click)="removeObject()">Remove</button>
     <button mat-raised-button color="warn" (click)="showGroup()">
