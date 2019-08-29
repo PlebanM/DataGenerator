@@ -30,6 +30,9 @@
                 <ng-template #input>
                     <mat-form-field>
                         <input matInput placeholder={{option.name}} formControlName={{option.name}}>
+                        <mat-error *ngIf="columnGroup.controls['options'].controls[option.name]">
+                            {{emp.getMessageForRandomError(columnGroup.controls['options'].controls[option.name].errors)}}
+                        </mat-error>
                     </mat-form-field>
                 </ng-template>
                 <ng-template #checkbox>
@@ -41,6 +44,9 @@
                             formControlName={{option.name}}>
                         <mat-datepicker-toggle matSuffix [for]="picker"></mat-datepicker-toggle>
                         <mat-datepicker #picker startView="year"></mat-datepicker>
+                        <mat-error *ngIf="columnGroup.controls['options'].controls[option.name]">
+                            {{emp.getMessageForRandomError(columnGroup.controls['options'].controls[option.name].errors)}}
+                        </mat-error>
                     </mat-form-field>
                 </ng-template>
             </div>

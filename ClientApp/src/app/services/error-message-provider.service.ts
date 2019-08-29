@@ -18,11 +18,13 @@ export class ErrorMessageProviderService {
 
     this.errorTemplateMap = new Map<string, Function>();
     this.errorTemplateMap.set("min", fillTemplate);
+    this.errorTemplateMap.set("max", fillTemplate);
 
     this.errorMessages = new Map<string, string>();
     this.errorMessages.set("required", "This field is required.");
     this.errorMessages.set("notANumber", "Provide a number");
-    this.errorMessages.set("min", "Number must be greater than ${this.min.min}");
+    this.errorMessages.set("min", "Number must be greater than or equal to ${this.min.min}");
+    this.errorMessages.set("max", "Number must be less than or equal to ${this.max.max}");
     this.errorMessages.set("uniqueColumnName", "Column names must be unique");
     this.errorMessages.set("uniqueTableName", "Table names must be unique");
     this.errorMessages.set("fromDateGreaterThanToDate", "'From Date' cannot be greater than 'To Date'");
