@@ -1,0 +1,42 @@
+<div >
+    <br />
+<select [(ngModel)]="entOne" >
+        <option *ngFor="let item of tableRaw; index as i" [value]="i">{{ item.name }}</option> 
+</select>
+<select>
+    <option *ngFor="let column of tableRaw[entOne]?.columnStructures" [value]="column.name">{{ column.name }}</option>
+</select>
+<select [(ngModel)]="entTwo" >
+        <option *ngFor="let item of tableRaw; index as i" [value]="i">{{ item.name }}</option> 
+</select>
+<select>
+    <option *ngFor="let column of tableRaw[entTwo]?.columnStructures" [value]="column.name">{{ column.name }}</option>
+</select>
+<!-- <select formControlName="entName" >
+        <option [value]="entVal">entity-nazwa-1</option>
+        <option [value]="entVal">entity-nazwa-2</option>
+</select>
+
+<select formControlName="entName" >
+        <option *ngFor="let cardOne of cardinalityOne" [value]="cardOne">{{ cardOne }}</option>
+</select>
+<select formControlName="entName" >
+        <option *ngFor="let modOne of modalityOne" [value]="modOne">{{ modOne }}</option>
+</select>
+<select formControlName="entName" >
+        <option [value]="entVal">entity-nazwa-1</option>
+        <option [value]="entVal">entity-nazwa-2</option>
+</select>
+<select formControlName="entName" >
+        <option [value]="entVal">entity-nazwa-1</option>
+        <option [value]="entVal">entity-nazwa-2</option>
+</select>
+<select formControlName="entName" >
+        <option *ngFor="let cardTwo of cardinalityTwo" [value]="cardTwo">{{ cardTwo }}</option>
+</select>
+<select formControlName="entName" >
+        <option *ngFor="let modTwo of modalityTwo" [value]="modTwo">{{ modTwo }}</option>
+</select>
+<br /> -->
+
+</div>

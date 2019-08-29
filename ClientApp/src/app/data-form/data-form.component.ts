@@ -18,7 +18,7 @@ export class DataFormComponent implements OnInit, AfterViewInit {
 
   constructor(private dataFormInputAdapter: DataFormInputAdapter, private sender: InputDataSenderService) { }
 
-  ngOnInit(): void {
+  ngOnInit() {
   }
 
   ngAfterViewInit(): void {

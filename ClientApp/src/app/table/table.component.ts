@@ -1,3 +1,4 @@
+import { TableEntityService } from './../services/table-entity.service';
 import { Component, OnInit, ViewChild, ViewContainerRef, ComponentFactoryResolver, ComponentRef, EventEmitter } from '@angular/core';
 import { ColumnTypesGetterService } from '../services/column-types-getter.service';
 import { ColumnType } from '../models/column-type';
@@ -11,6 +12,8 @@ import { TableValidatorProviderService } from '../services/table-validator-provi
   styleUrls: ['./table.component.css']
 })
 export class TableComponent implements OnInit {
+
+  
 
   _ref: any;
   deleteEvent = new EventEmitter<ComponentRef<TableComponent>>();
@@ -29,7 +32,8 @@ export class TableComponent implements OnInit {
 
   constructor(private columnTypeGetter: ColumnTypesGetterService,
     private crf: ComponentFactoryResolver,
-    private tableValidatorProvider: TableValidatorProviderService) { }
+    private tableValidatorProvider: TableValidatorProviderService,
+    private tableEntityService: TableEntityService) { }
 
   ngOnInit() {
     this.columnTypeGetter.getColumnTypes().subscribe(res => {
@@ -53,7 +57,7 @@ export class TableComponent implements OnInit {
     //console.log("before: ");
     //console.log(this.tableGroup);
     this.columns = this.columns.filter(elem => elem != ref);
-    let formArray = <FormArray>this.tableGroup.get("columnStructures");
+    let formArray = <FormArray>this.tableGroup.get('columnStructures');
     formArray.removeAt(formArray.value.findIndex(group => group == ref.instance.columnGroup))
     //console.log("After: ");
     //console.log(this.tableGroup);

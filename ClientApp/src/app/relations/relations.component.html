@@ -1,0 +1,52 @@
+<form [formGroup]="relationGroup" (ngSubmit)="submit()">
+  <div formArrayName="items"
+       *ngFor="let item of form.controls['items'].controls; let i = index">
+    <div [formGroupName]="i">
+      <fieldset formGroupName="entityOne">
+        <select formControlName='tableName' [(ngModel)]="entOne">
+          <option selected disabled>TableName</option>
+          <option *ngFor="let table of allTables; index as i" [value]="i">{{ table.name }}</option>
+        </select>
+
+        <select formControlName='columnName' >
+          <option selected disabled>ColumnName</option>
+          <option *ngFor="let column of allTables[entOne]?.columnStructures" [value]="column.name">{{ column.name }}</option>
+        </select>
+        <select formControlName='modality'>
+          <option selected disabled>Modality</option>
+          <option *ngFor="let mod of modalityOne" [value]="mod">{{ mod }}</option>
+        </select>
+        <select formControlName='cardinality'>
+          <option selected disabled>Cardinality</option>
+          <option *ngFor="let card of cardinalityOne" [value]="card">{{ card }}</option>
+        </select>
+      </fieldset>
+
+      <fieldset formGroupName="entityTwo">
+        <select formControlName='tableName' [(ngModel)]="entTwo">
+          <option selected disabled>TableName</option>
+          <option *ngFor="let table of allTables; index as i" [value]="i">{{ table.name }}</option>
+        </select>
+
+        <select formControlName='columnName' [(ngModel)]="entTwoColumns">
+          <option selected disabled>ColumnName</option>
+          <option *ngFor="let column of allTables[entTwo]?.columnStructures" [value]="column.name">{{ column.name }}</option>
+        </select>
+        <select formControlName='modality'>
+          <option selected disabled>Modality</option>
+          <option *ngFor="let mod of modalityTwo" [value]="mod">{{ mod }}</option>
+        </select>
+        <select formControlName='cardinality'>
+          <option selected disabled>Cardinality</option>
+          <option *ngFor="let card of cardinalityTwo" [value]="card">{{ card }}</option>
+        </select>
+
+
+      </fieldset>
+
+    </div>
+  </div>
+
+  <button type="button" (click)="addNext()">Add Next</button>
+  <button type="submit">Submit (look at console)</button>
+</form>

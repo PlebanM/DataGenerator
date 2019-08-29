@@ -1,3 +1,5 @@
+import { TableEntityService } from './services/table-entity.service';
+import { RelationshipsComponent } from './relationships/relationships.component';
 import { BrowserModule } from '@angular/platform-browser';
 import { NgModule, ComponentFactoryResolver } from '@angular/core';
 
@@ -20,6 +22,7 @@ import { MatNativeDateModule } from '@angular/material/core';
 import { DataFormComponent } from './data-form/data-form.component';
 import { DatePipe } from '@angular/common';
 import { TableDataFormComponent } from './table-data-form/table-data-form.component';
+import { EntityComponent } from './entity/entity.component';
 
 @NgModule({
   declarations: [
@@ -28,6 +31,9 @@ import { TableDataFormComponent } from './table-data-form/table-data-form.compon
     ColumnComponent,
     DataFormComponent,
     TableDataFormComponent,
+    EntityComponent,
+    RelationshipsComponent
+
   ],
   imports: [
     BrowserModule,
@@ -45,12 +51,13 @@ import { TableDataFormComponent } from './table-data-form/table-data-form.compon
     MatButtonModule,
     FormsModule,
     ReactiveFormsModule
-  ],
-  providers: [DatePipe],
+    ],
+  providers: [DatePipe, TableEntityService],
   bootstrap: [AppComponent],
   entryComponents: [
     ColumnComponent,
-    TableComponent
+    TableComponent,
+    EntityComponent
   ]
 })
 export class AppModule { }
