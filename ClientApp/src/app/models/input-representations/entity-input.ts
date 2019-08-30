@@ -4,7 +4,7 @@ import { Adapter } from '../adapter';
 
 
 export class EntityInput {
-    constructor(private entName: string) { }
+    constructor(private tableOneName: string, private tableTwoName: string) { }
 }
 
 @Injectable({
@@ -12,7 +12,7 @@ export class EntityInput {
 })
 export class EntityInputAdapter implements Adapter<EntityInput> {
     adapt(toAdapt: any): EntityInput {
-        return new EntityInput(toAdapt.entName);
+        return new EntityInput(toAdapt.entityOne.tableName, toAdapt.entityTwo.tableName);
     }
 
 }

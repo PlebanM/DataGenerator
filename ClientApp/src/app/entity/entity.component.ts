@@ -1,3 +1,4 @@
+import { createWiresService } from 'selenium-webdriver/firefox';
 import { Observable } from 'rxjs';
 import { Component, OnInit, Input } from '@angular/core';
 import { FormBuilder, FormGroup, FormControl, FormArray } from '@angular/forms';
@@ -10,38 +11,58 @@ import { TableInputAdapter } from '../models/input-representations/table-input';
   styleUrls: ['./entity.component.css']
 })
 export class EntityComponent implements OnInit {
-  
 
   _ref: any;
-  testLoop: Array<string> = ['jeden', 'dwa', 'trzy'];
+
   modalityOne: any = ['one', 'zero'];
   cardinalityOne: any = ['many', 'one'];
   modalityTwo: any = ['one', 'zero'];
   cardinalityTwo: any = ['many'];
-  testLoop2: any[];
+  tableRaw: any[] = [];
+  tablesFormArray: FormArray;
 
-  testInputTable: string;
 
-  entGroup: FormGroup;
+  relationships: FormGroup = new FormGroup({
+    entityOne: new FormGroup({
+      tableName: new FormControl(null),
+      columnName: new FormControl(null),
+      modality: new FormControl(null),
+      cardinality: new FormControl(null)
+    }),
+    entityTwo: new FormGroup({
+      tableName: new FormControl(null),
+      columnName: new FormControl(null),
+      modality: new FormControl(null),
+      cardinality: new FormControl(null)
+    })
 
-  entityGroup: FormGroup = new FormGroup({
-    entName: new FormControl(null)
   });
 
-  tablesFormArray: FormArray;
-  tableRaw: any[] = [];
 
 
-  constructor(private serviceEnt: TableEntityService, private tia: TableInputAdapter,) { }
+  constructor(private serviceEnt: TableEntityService, private tia: TableInputAdapter) { }
 
   ngOnInit() {
-  this.testLoop2 = this.serviceEnt.testLoop2;
   this.tablesFormArray = this.serviceEnt.tablesFormArray;
-  
+
   this.tablesFormArray.controls.forEach(element => {
     this.tableRaw.push(this.tia.adapt((<FormGroup>element).getRawValue()));
   });
-
+  console.log(this.tableRaw);
+  console.log(this.tablesFormArray);
   }
+
+  
+  getTableByName(name: string) {
+
+    for (let index = 0; index < this.tableRaw.length; index++) {
+      const element = this.tableRaw[index];
+      if(element.name === name)
+      {console.log(element);
+        return element; }
+    }
+    return [];
+  }
+
 
 }

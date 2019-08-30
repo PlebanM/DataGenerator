@@ -23,6 +23,8 @@ import { DataFormComponent } from './data-form/data-form.component';
 import { DatePipe } from '@angular/common';
 import { TableDataFormComponent } from './table-data-form/table-data-form.component';
 import { EntityComponent } from './entity/entity.component';
+import {MatChipsModule} from '@angular/material/chips';
+
 
 @NgModule({
   declarations: [
@@ -50,7 +52,8 @@ import { EntityComponent } from './entity/entity.component';
     MatNativeDateModule,
     MatButtonModule,
     FormsModule,
-    ReactiveFormsModule
+    ReactiveFormsModule,
+    MatChipsModule
     ],
   providers: [DatePipe, TableEntityService],
   bootstrap: [AppComponent],

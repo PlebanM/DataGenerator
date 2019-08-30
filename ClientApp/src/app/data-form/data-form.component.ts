@@ -4,6 +4,7 @@ import { FormGroup, FormControl, FormArray } from '@angular/forms';
 import { TableDataFormComponent } from '../table-data-form/table-data-form.component';
 import { DataFormInputAdapter } from '../models/input-representations/data-form-input';
 import { InputDataSenderService } from '../services/input-data-sender.service';
+import { RelationshipsComponent } from '../relationships/relationships.component';
 
 @Component({
   selector: 'app-data-form',
@@ -13,6 +14,7 @@ import { InputDataSenderService } from '../services/input-data-sender.service';
 export class DataFormComponent implements OnInit, AfterViewInit {
 
   @ViewChild('tableform', { static: false }) tables: TableDataFormComponent
+  @ViewChild('relationshipForm', { static: false }) relationships: RelationshipsComponent
 
   formData: FormGroup;
 
@@ -23,9 +25,10 @@ export class DataFormComponent implements OnInit, AfterViewInit {
 
   ngAfterViewInit(): void {
 
+
     this.formData = new FormGroup({
       settings: new FormControl("temporary"),
-      relationships: new FormArray([]), //temporary
+      relationships: this.relationships.entitiesFormArray,
       tables: this.tables.tablesFormArray
     })
   }
@@ -34,6 +37,7 @@ export class DataFormComponent implements OnInit, AfterViewInit {
     // console.log(this.formData.getRawValue());
     // console.log(this.dataFormInputAdapter.adapt(this.formData.getRawValue()));
     // console.log(JSON.stringify(this.dataFormInputAdapter.adapt(this.formData.getRawValue())));
+    console.log(this.dataFormInputAdapter.adapt(this.formData.getRawValue()));
     this.sender.send(this.dataFormInputAdapter.adapt(this.formData.getRawValue()));
   }
 }

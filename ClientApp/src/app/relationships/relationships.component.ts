@@ -3,6 +3,7 @@ import { EntityInputAdapter } from './../models/input-representations/entity-inp
 import { EntityComponent } from './../entity/entity.component';
 import { FormGroup, FormBuilder, FormArray } from '@angular/forms';
 import { Component, OnInit, ViewChild, ViewContainerRef, ComponentRef, ComponentFactoryResolver } from '@angular/core';
+import { createWiresService } from 'selenium-webdriver/firefox';
 
 @Component({
   selector: 'app-relationships',
@@ -18,24 +19,34 @@ export class RelationshipsComponent implements OnInit {
   entitiesFormArray: FormArray;
   
   tableRead: any;
+  tableRaw: any[] = [];
 
-  constructor(private fb: FormBuilder, private cfr: ComponentFactoryResolver,
+  constructor( private fb: FormBuilder, private cfr: ComponentFactoryResolver,
     private eia: EntityInputAdapter, private tableEntityService: TableEntityService ) {
       this.entitiesFormArray = new FormArray([]);
   }
 
   ngOnInit() {
+    
   }
 
   addRelation() {
     let entityFactory = this.cfr.resolveComponentFactory(EntityComponent);
     let entity = this.container.createComponent(entityFactory);
     entity.instance._ref = entity;
-    this.entitiesFormArray.push(entity.instance.entityGroup);
+    this.entitiesFormArray.push(entity.instance.relationships);
     this.entities.push(entity);
+    
+    console.log(this.entitiesFormArray);
+    
       
   }
 
+  changeTableNameFromIndexToName(tableFormArray){
 
+    for (let index = 0; index < this.entitiesFormArray.value.length; index++) {
+      this.entitiesFormArray.value[index].entityOne.tableName = tableFormArray.value[this.entitiesFormArray.value[index].entityOne.tableName].name;
+      this.entitiesFormArray.value[index].entityTwo.tableName = tableFormArray.value[this.entitiesFormArray.value[index].entityTwo.tableName].name;
+    }}
 
 }
