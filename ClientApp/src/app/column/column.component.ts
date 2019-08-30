@@ -5,6 +5,7 @@ import { FormGroup, FormControl, Validators } from '@angular/forms';
 import { ColumnInputAdapter, ColumnInput } from '../models/input-representations/column-input';
 import { OptionValidatorProviderService } from '../services/options/option-validator-provider.service';
 import { OptionGroupValidatorProviderService } from '../services/options/option-group-validator-provider.service';
+import { ErrorMessageProviderService } from '../services/error-message-provider.service';
 
 @Component({
   selector: 'app-column',
@@ -28,7 +29,8 @@ export class ColumnComponent implements OnInit {
   constructor(private optionTypeFinder: OptionTypeFinderService,
     private columnInputAdapter: ColumnInputAdapter,
     private optionValidatorProvider: OptionValidatorProviderService,
-    private optionGroupValidatorProvider: OptionGroupValidatorProviderService) {
+    private optionGroupValidatorProvider: OptionGroupValidatorProviderService,
+    private emp: ErrorMessageProviderService) {
     this.columnGroup = new FormGroup({
       name: new FormControl(null, Validators.required),
       type: new FormControl(null, Validators.required),

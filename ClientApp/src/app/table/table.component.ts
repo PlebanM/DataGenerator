@@ -5,6 +5,7 @@ import { ColumnType } from '../models/column-type';
 import { ColumnComponent } from '../column/column.component';
 import { FormArray, FormGroup, FormControl, Validators } from '@angular/forms';
 import { TableValidatorProviderService } from '../services/table-validator-provider.service';
+import { ErrorMessageProviderService } from '../services/error-message-provider.service';
 
 @Component({
   selector: 'app-table',
@@ -33,7 +34,8 @@ export class TableComponent implements OnInit {
   constructor(private columnTypeGetter: ColumnTypesGetterService,
     private crf: ComponentFactoryResolver,
     private tableValidatorProvider: TableValidatorProviderService,
-    private tableEntityService: TableEntityService) { }
+    private tableEntityService: TableEntityService,
+    private emp: ErrorMessageProviderService) { }
 
   ngOnInit() {
     this.columnTypeGetter.getColumnTypes().subscribe(res => {

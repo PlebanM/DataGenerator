@@ -11,7 +11,7 @@ export class TableValidatorProviderService {
 
   getForRowCount(): Array<ValidatorFn> {
     let validators = [];
-    validators.push(Validators.required, CommonValidators.getIsNumberValidator(), Validators.min(1));
+    validators.push(Validators.required, CommonValidators.isNumber, Validators.min(1));
     return validators;
   }
 

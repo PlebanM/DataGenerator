@@ -4,6 +4,7 @@ import { TableComponent } from '../table/table.component';
 import { FormArray, FormControl, FormGroup } from '@angular/forms';
 import { TableInputAdapter } from '../models/input-representations/table-input';
 import { TableDataFormValidatorProviderService } from '../services/table-data-form-validator-provider.service';
+import { ErrorMessageProviderService } from '../services/error-message-provider.service';
 
 @Component({
   selector: 'app-table-data-form',
@@ -21,7 +22,8 @@ export class TableDataFormComponent implements OnInit {
 
   constructor(private cfr: ComponentFactoryResolver,
     private tia: TableInputAdapter, private entityService: TableEntityService,
-    private tableDataFormValidatorProvider: TableDataFormValidatorProviderService) {
+    private tableDataFormValidatorProvider: TableDataFormValidatorProviderService, private emp: ErrorMessageProviderService) {
+
     this.tablesFormArray = new FormArray([], tableDataFormValidatorProvider.getForTables())
   }
 
