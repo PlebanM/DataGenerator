@@ -1,3 +1,4 @@
+import { TableEntityService } from './../services/table-entity.service';
 import { Component, OnInit, ViewContainerRef, ViewChild, ComponentRef, ComponentFactoryResolver } from '@angular/core';
 import { TableComponent } from '../table/table.component';
 import { FormArray, FormControl, FormGroup } from '@angular/forms';
@@ -17,15 +18,17 @@ export class TableDataFormComponent implements OnInit {
 
   tables: Array<ComponentRef<TableComponent>> = [];
   tablesFormArray: FormArray;
+  allTables: any[] = [];
 
   constructor(private cfr: ComponentFactoryResolver,
-    private tia: TableInputAdapter,
-    private tableDataFormValidatorProvider: TableDataFormValidatorProviderService,
-    private emp: ErrorMessageProviderService) {
+    private tia: TableInputAdapter, private entityService: TableEntityService,
+    private tableDataFormValidatorProvider: TableDataFormValidatorProviderService, private emp: ErrorMessageProviderService) {
+
     this.tablesFormArray = new FormArray([], tableDataFormValidatorProvider.getForTables())
   }
 
   ngOnInit() {
+    this.entityService.setTableFormFromArray(this.tablesFormArray);
   }
 
   addTable(): void {
@@ -44,13 +47,16 @@ export class TableDataFormComponent implements OnInit {
   }
 
   //to delete
-  showTables() {
+  showTables()  {
     console.log(this.tables);
+    console.log('--->');
+
     console.log(this.tablesFormArray);
     let finalList = [];
     this.tablesFormArray.controls.forEach(element => {
       finalList.push(this.tia.adapt((<FormGroup>element).getRawValue()));
     });
+    
     console.log(finalList);
   }
 

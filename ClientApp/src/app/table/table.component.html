@@ -1,10 +1,12 @@
 <div class="table" [formGroup]="tableGroup">
     <h2>Table</h2>
     <mat-form-field>
+
         <input matInput placeholder="Table name" formControlName="name">
         <mat-error *ngIf="tableGroup.controls['name']">
             {{emp.getMessageForRandomError(tableGroup.controls["name"].errors)}}
         </mat-error>
+
     </mat-form-field>
     <mat-form-field>
         <input matInput placeholder="Number of rows" formControlName="rowCount">

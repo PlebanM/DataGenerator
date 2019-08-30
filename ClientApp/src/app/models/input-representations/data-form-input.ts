@@ -21,11 +21,12 @@ export class DataFormInputAdapter implements Adapter<DataFormInput> {
     adapt(toAdapt: any): DataFormInput {
         let settings = this.settingsInputAdapter.adapt(null); //has to change
         //let relationships = [this.relationshipAdapter.adapt(null)]; //has to change
-        let relationships = []; //has to change
+        let relationships = toAdapt.relationships;
         let tables = [];
         toAdapt.tables.forEach(table => {
             tables.push(this.tableInputAdapter.adapt(table));
         });
+        
         return new DataFormInput(settings, relationships, tables);
     }
 }

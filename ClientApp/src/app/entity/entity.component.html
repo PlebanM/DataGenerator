@@ -1,0 +1,63 @@
+<ng-container *ngIf="tableRaw.length > 1">
+        <div class="relations">
+<form [formGroup]="relationships">
+        <div formGroupName="entityOne">
+                <h2>Relationships</h2>
+                <h4>First Table</h4>
+                <mat-form-field>
+                <mat-select placeholder="Table Name" [(ngModel)]="entOne" formControlName="tableName">
+                        <mat-option *ngFor="let item of tableRaw; index as i" [value]="item.name" >{{ item.name }}
+                        </mat-option> 
+                </mat-select>
+                </mat-form-field>
+                   
+                <mat-form-field>
+                <mat-select placeholder="Column name" formControlName="columnName">
+                        <mat-option *ngFor="let column of getTableByName(entOne)?.columnStructures" [value]="column.name">{{ column.name }}</mat-option>
+                </mat-select>
+                </mat-form-field>
+                <mat-form-field>
+                <mat-select placeholder="Cardinality" formControlName="cardinality">
+                                <mat-option *ngFor="let cardOne of cardinalityOne" [value]="cardOne">{{ cardOne }}</mat-option>
+                </mat-select>
+                </mat-form-field>
+                <mat-form-field>
+                <mat-select placeholder="Modality" formControlName="modality">
+                        <mat-option *ngFor="let modOne of modalityOne" [value]="modOne">{{ modOne }}</mat-option>
+                </mat-select>
+                </mat-form-field>
+        </div>
+        <div></div>
+        <div formGroupName="entityTwo">
+                <h4>Second Table</h4>                
+                <mat-form-field>
+                        <mat-select placeholder="Table Name" [(ngModel)]="entiOne" formControlName="tableName" >
+                                <mat-option *ngFor="let item of tableRaw; index as i" [value]="item.name">{{ item.name }}
+                                </mat-option> 
+                        </mat-select>
+                        </mat-form-field>
+                                
+                        <mat-form-field>
+                        <mat-select placeholder="Column Name" formControlName="columnName">
+                                <mat-option *ngFor="let column of getTableByName(entiOne)?.columnStructures" [value]="column.name">{{ column.name }}</mat-option>
+                        </mat-select>
+                        </mat-form-field>
+                        <mat-form-field>
+                        <mat-select placeholder="Cardinality" formControlName="cardinality">
+                                        <mat-option *ngFor="let cardTwo of cardinalityTwo" [value]="cardTwo">{{ cardTwo }}</mat-option>
+                        </mat-select>
+                        </mat-form-field>
+                        <mat-form-field>
+                        <mat-select placeholder="Modality" formControlName="modality">
+                                <mat-option *ngFor="let modTwo of modalityTwo" [value]="modTwo">{{ modTwo }}</mat-option>
+                        </mat-select>
+                </mat-form-field>
+        </div>
+</form>
+</div>
+</ng-container>
+<ng-template #elseTemplate>
+    <mat-chip-list aria-label="Fish selection">
+        <mat-chip color="warn" selected>To create relationship you have to create at least 2 tables.</mat-chip>
+    </mat-chip-list> 
+</ng-template>
