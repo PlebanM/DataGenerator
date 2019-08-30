@@ -27,14 +27,14 @@ export class OptionValidatorProviderService {
   getForFrom(): Array<ValidatorFn> {
     let validators = [];
     validators.push(Validators.required);
-    validators.push(CommonValidators.getIsNumberValidator())
+    validators.push(CommonValidators.isNumber)
     return validators;
   }
 
   getForGap(): Array<ValidatorFn> {
     let validators = [];
     validators.push(Validators.required);
-    validators.push(CommonValidators.getIsNumberValidator())
+    validators.push(CommonValidators.isNumber)
     return validators;
   }
 
@@ -43,7 +43,7 @@ export class OptionValidatorProviderService {
     validators.push(Validators.required);
     validators.push(Validators.min(0));
     validators.push(Validators.max(100));
-    validators.push(CommonValidators.getIsNumberValidator())
+    validators.push(CommonValidators.isNumber)
     return validators;
   }
 
@@ -52,7 +52,7 @@ export class OptionValidatorProviderService {
     validators.push(Validators.required);
     validators.push(Validators.min(1));
     validators.push(Validators.max(30));
-    validators.push(CommonValidators.getIsNumberValidator())
+    validators.push(CommonValidators.isNumber)
     return validators;
   }
 
@@ -60,7 +60,7 @@ export class OptionValidatorProviderService {
     let validators = [];
     validators.push(Validators.required);
     validators.push(Validators.min(0));
-    validators.push(CommonValidators.getIsNumberValidator())
+    validators.push(CommonValidators.isNumber)
     return validators;
   }
 

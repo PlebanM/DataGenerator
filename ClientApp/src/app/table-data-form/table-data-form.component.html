@@ -1,4 +1,7 @@
 <div #tables></div>
+<mat-error *ngIf="tablesFormArray.errors">
+    {{emp.getMessageForRandomError(tablesFormArray.errors)}}
+</mat-error>
 <button mat-raised-button color="primary" (click)="addTable()">Add Table</button>
 <button mat-raised-button color="primary" (click)="showTables()">
     <!--to delete--> Show table (debug)</button>
